@@ -1,0 +1,66 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package transaccion;
+
+import bd.Usuario;
+import conexion.Conexion;
+import conexion.TransaccionRS;
+import java.lang.reflect.ParameterizedType;
+import java.sql.ResultSet;
+import java.util.List;
+
+/**
+ *
+ * @author Diego
+ */
+public class TransaccionBase <E>{
+    protected Conexion conexion;
+    Class<E> clase;
+    public TransaccionBase(){
+        //this.clase = clase;
+        this.clase = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        conexion = new Conexion();       
+    }
+ public int alta(Object obj){
+     int id = 0;
+     id = new TransaccionRS().altaObjetoAutonumerico(obj);
+     return id;
+ }    
+ public boolean baja(Object obj){
+     boolean todoOk = false;
+     todoOk = new TransaccionRS().eliminarObjeto(obj);
+     return todoOk;
+ }
+ public boolean actualizar(Object obj,String campo_id){
+     boolean todoOk = false;
+     new TransaccionRS().actualizarObjeto(obj, campo_id);
+     return todoOk;
+ }
+ public List<E> getList(String query){
+        List<E> lista = null;
+        conexion.conectarse();
+        ResultSet rs = conexion.ejecutarSQLSelect(query);
+        System.out.println(this.clase.getCanonicalName());
+        lista = new TransaccionRS().recuperarLista(this.clase.getCanonicalName(), rs);
+        conexion.desconectarse();
+        return lista;
+ }
+ 
+ public E getById(String query){
+     E obj = null;
+     conexion.conectarse();
+     ResultSet rs = conexion.ejecutarSQLSelect(query);
+     TransaccionRS t = new TransaccionRS();
+     List listaUsuario = t.recuperarLista(this.clase.getCanonicalName(), rs);
+     conexion.desconectarse();
+
+     if (listaUsuario.size() > 0) {
+        obj = (E) listaUsuario.get(0);
+     } 
+     return obj;
+ }
+         
+         
+}
