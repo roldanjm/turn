@@ -15,30 +15,36 @@ import java.util.List;
  *
  * @author Diego
  */
-public class TransaccionBase <E>{
+public class TransaccionBase<E> {
+
     protected Conexion conexion;
     Class<E> clase;
-    public TransaccionBase(){
+
+    public TransaccionBase() {
         //this.clase = clase;
         this.clase = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        conexion = new Conexion();       
+        conexion = new Conexion();
     }
- public int alta(Object obj){
-     int id = 0;
-     id = new TransaccionRS().altaObjetoAutonumerico(obj);
-     return id;
- }    
- public boolean baja(Object obj){
-     boolean todoOk = false;
-     todoOk = new TransaccionRS().eliminarObjeto(obj);
-     return todoOk;
- }
- public boolean actualizar(Object obj,String campo_id){
-     boolean todoOk = false;
-     new TransaccionRS().actualizarObjeto(obj, campo_id);
-     return todoOk;
- }
- public List<E> getList(String query){
+
+    public int alta(Object obj) {
+        int id = 0;
+        id = new TransaccionRS().altaObjetoAutonumerico(obj);
+        return id;
+    }
+
+    public boolean baja(Object obj) {
+        boolean todoOk = false;
+        todoOk = new TransaccionRS().eliminarObjeto(obj);
+        return todoOk;
+    }
+
+    public boolean actualizar(Object obj, String campo_id) {
+        boolean todoOk = false;
+        new TransaccionRS().actualizarObjeto(obj, campo_id);
+        return todoOk;
+    }
+
+    public List<E> getList(String query) {
         List<E> lista = null;
         conexion.conectarse();
         ResultSet rs = conexion.ejecutarSQLSelect(query);
@@ -46,21 +52,37 @@ public class TransaccionBase <E>{
         lista = new TransaccionRS().recuperarLista(this.clase.getCanonicalName(), rs);
         conexion.desconectarse();
         return lista;
- }
- 
- public E getById(String query){
-     E obj = null;
-     conexion.conectarse();
-     ResultSet rs = conexion.ejecutarSQLSelect(query);
-     TransaccionRS t = new TransaccionRS();
-     List listaUsuario = t.recuperarLista(this.clase.getCanonicalName(), rs);
-     conexion.desconectarse();
+    }
 
-     if (listaUsuario.size() > 0) {
-        obj = (E) listaUsuario.get(0);
-     } 
-     return obj;
- }
-         
-         
+    public List<E> getListFilter(Object object) {
+        String sql = new TransaccionRS().recuperarListaDefault(object, "");
+        if (sql != null && !sql.equalsIgnoreCase("")) {
+            return this.getList(sql);
+        }
+        return null;
+    }
+
+    public E getById(String query) {
+        E obj = null;
+        conexion.conectarse();
+        ResultSet rs = conexion.ejecutarSQLSelect(query);
+        TransaccionRS t = new TransaccionRS();
+        List listaUsuario = t.recuperarLista(this.clase.getCanonicalName(), rs);
+        conexion.desconectarse();
+
+
+
+
+
+        if (listaUsuario.size() > 0) {
+            obj = (E) listaUsuario.get(0);
+
+
+
+
+        }
+        return obj;
+
+
+    }
 }

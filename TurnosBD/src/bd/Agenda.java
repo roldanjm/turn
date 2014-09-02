@@ -17,7 +17,7 @@ public class Agenda {
     String agenda_hfin = "";
     String agenda_alta = "";
 
-
+public String sqlfrom(){return "ep_venue";}
 public Integer getAgenda_id (){return this.agenda_id ;}
 public Integer getProf_id (){return this.prof_id;}
 public String getAgenda_dia (){return this.agenda_dia;}

@@ -22,6 +22,108 @@ import sun.reflect.LangReflectAccess;
  */
 public class TransaccionRS {
 
+    //Devuelve un sql SELECT generado para recuperar segun los parametros seteados al objeto
+    public String recuperarListaDefault(Object objeto, String extensionSQL) {
+
+        String clase = objeto.getClass().getSimpleName();
+        String tabla = clase.toLowerCase();
+        Field[] atributos = objeto.getClass().getDeclaredFields();
+        String where = "";
+        Object from = null;
+        boolean band = false;
+        for (int i = 0; i <= atributos.length - 1; i++) {
+            try {
+
+                Method getterFrom = objeto.getClass().getMethod("sqlfrom");
+                from = getterFrom.invoke(objeto, new Object[0]);
+
+                Class tipoClass = atributos[i].getType();
+                String tipo = tipoClass.getSimpleName();
+                String getNombre = atributos[i].getName();
+                getNombre = getNombre.substring(0, 1).toUpperCase() + getNombre.substring(1, getNombre.length());
+                Method getter = objeto.getClass().getMethod("get" + getNombre);
+                if (tipo.equals("String") == true) {
+                    try {
+                        Object valor = getter.invoke(objeto, new Object[0]);
+                        if (valor == null || valor.equals("") || valor.equals("0000-01-01")) {
+                        } else {
+                            where += band ? " and " : "";
+                            where += getNombre.toLowerCase() + " like '%" + valor + "%'";
+                            band = true;
+                        }
+                    } catch (IllegalAccessException ex) {
+                        Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IllegalArgumentException ex) {
+                        Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InvocationTargetException ex) {
+                        Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (tipo.equals("Integer") == true || tipo.equals("int") == true || tipo.equals("float") == true || tipo.equals("double") == true) {
+                    try {
+                        Object valor = getter.invoke(objeto, new Object[0]);
+                        if (valor != null) {
+
+                            if (tipo.equals("Integer") || tipo.equals("int")) {
+                                if (Integer.parseInt(String.valueOf(valor)) != 0) {
+                                    where += band ? " and " : "";
+                                    where += getNombre.toLowerCase() + " = " + valor;;
+                                    band = true;
+                                }
+                            }
+
+                            if (tipo.equals("float")) {
+                                if (Float.parseFloat(String.valueOf(valor)) != 0) {
+                                    where += band ? " and " : "";
+                                    where += getNombre.toLowerCase() + " = " + valor;;
+                                    band = true;
+                                }
+                            }
+
+                            if (tipo.equals("double")) {
+                                if (Double.parseDouble(String.valueOf(valor)) != 0) {
+                                    where += band ? " and " : "";
+                                    where += getNombre.toLowerCase() + " = " + valor;;
+                                    band = true;
+                                }
+                            }
+
+
+                        } else {
+                        }
+                    } catch (IllegalAccessException ex) {
+                        Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IllegalArgumentException ex) {
+                        Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InvocationTargetException ex) {
+                        Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchMethodException ex) {
+                Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        String consulta = "select * from " + String.valueOf(from);
+        if (!where.equalsIgnoreCase("")) {
+            consulta += " where " + where;
+        }
+        if (!extensionSQL.equalsIgnoreCase("")) {
+            consulta += " " + extensionSQL;
+        }
+
+        return consulta;
+
+    }
+
     public List recuperarLista(String clase, ResultSet rs) {
         Method metodo;
         String tipobd = "";
