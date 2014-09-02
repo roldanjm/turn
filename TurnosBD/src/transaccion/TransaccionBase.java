@@ -54,8 +54,8 @@ public class TransaccionBase<E> {
         return lista;
     }
 
-    public List<E> getListFilter(Object object) {
-        String sql = new TransaccionRS().recuperarListaDefault(object, "");
+    public List<E> getListFilter(Object object, String extendSQL) {
+        String sql = new TransaccionRS().recuperarListaDefault(object, extendSQL);
         if (sql != null && !sql.equalsIgnoreCase("")) {
             return this.getList(sql);
         }
