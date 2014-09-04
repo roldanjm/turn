@@ -15,10 +15,22 @@
         <link href="css/ie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
     <link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
+    
+    
+    <link rel="stylesheet" type="text/css" href="js/plugins/jtable/themes/lightcolor/blue/jtable.css" />
 
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
-    <script type='text/javascript' src='js/plugins/jquery/jquery.mousewheel.min.js'></script>
+    
+    
+
+<!-- <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>-->
+
+
+<script type='text/javascript' src='js/jquery.js'></script>
+<script type='text/javascript' src='js/jquery/jquery-ui/jquery-ui-1.10.4.custom.min.js'></script>
+
+
+<script type='text/javascript' src='js/plugins/jquery/jquery.mousewheel.min.js'></script>
 
     <script type='text/javascript' src='js/plugins/cookie/jquery.cookies.2.2.0.min.js'></script>
 
@@ -49,7 +61,8 @@
     <script type='text/javascript' src='js/plugins/qtip/jquery.qtip-1.0.0-rc3.min.js'></script>
 
     <script type='text/javascript' src='js/plugins/cleditor/jquery.cleditor.js'></script>
-
+    
+    <!-- Eliminar ?-->
     <script type='text/javascript' src='js/plugins/dataTables/jquery.dataTables.min.js'></script>
 
     <script type='text/javascript' src='js/plugins/fancybox/jquery.fancybox.pack.js'></script>
@@ -58,5 +71,9 @@
     <script type='text/javascript' src='js/actions.js'></script>
     <script type='text/javascript' src='js/charts.js'></script>
     <script type='text/javascript' src='js/plugins.js'></script>
-
+    
+    <!--Plugins Agregados-->
+    <script type="text/javascript" src="js/plugins/jtable/jquery.jtable.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jtable/jquery.jtable.js"></script>
+    
 </head>
