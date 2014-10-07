@@ -4,12 +4,12 @@
  */
 package transaccion;
 
-import bd.Usuario;
 import conexion.Conexion;
 import conexion.TransaccionRS;
 import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -56,6 +56,7 @@ public class TransaccionBase<E> {
 
     public List<E> getListFilter(Object object, String extendSQL) {
         String sql = new TransaccionRS().recuperarListaDefault(object, extendSQL);
+        System.out.println(sql);
         if (sql != null && !sql.equalsIgnoreCase("")) {
             return this.getList(sql);
         }
@@ -70,19 +71,15 @@ public class TransaccionBase<E> {
         List listaUsuario = t.recuperarLista(this.clase.getCanonicalName(), rs);
         conexion.desconectarse();
 
-
-
-
-
-        if (listaUsuario.size() > 0) {
+        if (listaUsuario != null && listaUsuario.size() > 0) {
             obj = (E) listaUsuario.get(0);
-
-
-
-
         }
         return obj;
+    }
 
-
+    public E recuperarInstancia(Map<String, String[]> map) {
+        TransaccionRS t = new TransaccionRS();
+        Object object = t.altaObjeto(this.clase.getCanonicalName(), map);
+        return (E) object;
     }
 }

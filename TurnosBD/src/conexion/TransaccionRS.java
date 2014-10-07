@@ -11,7 +11,9 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sun.reflect.LangReflectAccess;
@@ -22,7 +24,6 @@ import sun.reflect.LangReflectAccess;
  */
 public class TransaccionRS {
 
-    //Devuelve un sql SELECT generado para recuperar segun los parametros seteados al objeto
     public String recuperarListaDefault(Object objeto, String extensionSQL) {
 
         String clase = objeto.getClass().getSimpleName();
@@ -66,7 +67,8 @@ public class TransaccionRS {
                             if (tipo.equals("Integer") || tipo.equals("int")) {
                                 if (Integer.parseInt(String.valueOf(valor)) != 0) {
                                     where += band ? " and " : "";
-                                    where += getNombre.toLowerCase() + " = " + valor;;
+                                    where += getNombre.toLowerCase() + " = " + valor;
+                                    ;
                                     band = true;
                                 }
                             }
@@ -74,7 +76,8 @@ public class TransaccionRS {
                             if (tipo.equals("float")) {
                                 if (Float.parseFloat(String.valueOf(valor)) != 0) {
                                     where += band ? " and " : "";
-                                    where += getNombre.toLowerCase() + " = " + valor;;
+                                    where += getNombre.toLowerCase() + " = " + valor;
+                                    ;
                                     band = true;
                                 }
                             }
@@ -82,7 +85,8 @@ public class TransaccionRS {
                             if (tipo.equals("double")) {
                                 if (Double.parseDouble(String.valueOf(valor)) != 0) {
                                     where += band ? " and " : "";
-                                    where += getNombre.toLowerCase() + " = " + valor;;
+                                    where += getNombre.toLowerCase() + " = " + valor;
+                                    ;
                                     band = true;
                                 }
                             }
@@ -189,6 +193,7 @@ public class TransaccionRS {
                         Class[] clasesParamSetEmail = new Class[1];
                         clasesParamSetEmail[0] = Class.forName(tipobd);
                         name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
+
                         Method metSetEmail = claseGenerada.getMethod("set" + name, clasesParamSetEmail);
                         Object[] paramSetEmail = new Object[1];
                         paramSetEmail[0] = valor;
@@ -233,7 +238,7 @@ public class TransaccionRS {
     /*public Object recuperarObjeto(String objeto, ResultSet rs){
 
 
-     }*/
+    }*/
     public boolean altaObjeto(Object objeto) {
 
         String clase = objeto.getClass().getSimpleName();
@@ -435,11 +440,11 @@ public class TransaccionRS {
         StringBuffer query = new StringBuffer();
         query.append("update " + tabla + " set ");
         /*for (int i = 0; i <= atributos.length - 1; i++) {
-         query.append(atributos[i].getName());
-         if (i != atributos.length - 1) {
-         query.append(",");
-         }
-         }*/
+        query.append(atributos[i].getName());
+        if (i != atributos.length - 1) {
+        query.append(",");
+        }
+        }*/
         //query.append(") values (");
         for (int i = 0; i <= atributos.length - 1; i++) {
             try {
@@ -505,5 +510,73 @@ public class TransaccionRS {
         System.out.println("SQL: " + sql);
         return result;
 
+    }
+
+    public Object altaObjeto(String clase, Map<String, String[]> map) {
+        try {
+
+            Class claseGenerada = Class.forName(clase.trim());
+            Object objeto = claseGenerada.newInstance();
+            Iterator it = map.keySet().iterator();
+            while (it.hasNext()) {
+                String key = (String) it.next();
+                if (!key.equalsIgnoreCase("clase")) {
+                    Object value = map.get(key)[0];
+                    System.out.println("value: " + value);
+                    String name = key.substring(0, 1).toUpperCase() + key.substring(1, key.length());
+                    Method miMetodo = recuperarMetodo(claseGenerada, "set" + name);
+                    if (miMetodo != null) {
+                        String nameParameter = miMetodo.getParameterTypes()[0].getName();
+                        Object[] parametro = new Object[1];
+                        parametro[0] = recuperarValor(value, nameParameter);
+
+                        System.out.println(nameParameter);
+                        miMetodo.invoke(objeto, parametro);
+                    } 
+                }
+            }            
+            return objeto;
+        } catch (IllegalArgumentException ex) {
+            return null;
+        } catch (InvocationTargetException ex) {
+            return false;
+        } catch (SecurityException ex) {
+            return null;
+        } catch (InstantiationException ex) {
+            return null;
+        } catch (IllegalAccessException ex) {
+            return null;
+        } catch (ClassNotFoundException ex) {
+            return null;
+        }
+
+    }
+
+    public Method recuperarMetodo(Class clase, String metodo) {
+        Method[] metodos = clase.getMethods();
+        int i = 0;
+        while (i < metodos.length) {
+            if (metodos[i].getName().equalsIgnoreCase(metodo)) {
+                return metodos[i];
+            }
+            i++;
+        }
+        return null;
+    }
+
+    public Object recuperarValor(Object value, String tipoParametro) {
+
+
+        if (tipoParametro.equalsIgnoreCase("java.lang.Integer")) {
+            return Integer.parseInt((String) value);
+        }
+        if (tipoParametro.equalsIgnoreCase("java.lang.String")) {
+            return (String) value;
+        }
+        if (tipoParametro.equalsIgnoreCase("java.lang.Float")) {
+            return Float.parseFloat((String) value);
+        }
+
+        return null;
     }
 }
