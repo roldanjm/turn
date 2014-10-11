@@ -9,6 +9,8 @@
     <link rel="icon" type="image/ico" href="favicon.ico"/>
 
     <link href="css/stylesheets.css" rel="stylesheet" type="text/css" />
+    <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
+    
     <!--[if lt IE 8]>
         <link href="css/ie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
@@ -37,7 +39,7 @@
 <!--<script type='text/javascript' src='js/plugins/fancybox/jquery.fancybox.pack.js'></script>-->
 
 <script type='text/javascript' src='js/cookies.js'></script>
-<!--<script type='text/javascript' src='js/actions.js'></script>-->
+<script type='text/javascript' src='js/actions.js'></script>
 <!--<script type='text/javascript' src='js/plugins.js'></script>-->
 
 <script type='text/javascript' src='js/plugins/jtable/jquery.jtable.min.js'></script>

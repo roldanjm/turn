@@ -100,10 +100,10 @@ public class TurnosBD {
         //     new TEspecialidad().alta(new Especialidad().setEspec_detalle("Especialidad 2"));
         //     new TEspecialidad().alta(new Especialidad().setEspec_detalle("Especialidad 3"));
         //     new TEspecialidad().alta(new Especialidad().setEspec_detalle("Especialidad 4"));
-        //    List<Especialidad> listEspecialidad = new TEspecialidad().getList();
-        //    for (Especialidad espe : listEspecialidad) {
-        //            System.out.println(espe.getEspec_detalle());
-        //    }
+            List<Especialidad> listEspecialidad = new TEspecialidad().getList();
+            for (Especialidad espe : listEspecialidad) {
+                    System.out.println(espe.getEspec_detalle());
+            }
         //Usuario user = new TUsuario().getByUsername("dgiulian");
 //        Usuario user = new Usuario()
 //                                .setUsu_username("petealf")

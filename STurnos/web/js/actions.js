@@ -159,7 +159,7 @@ $(document).ready(function(){
     });
 
 
-    $("#menuDatepicker").datepicker();
+    //$("#menuDatepicker").datepicker();
     
     
     $(".link_navPopMessages").click(function(){
@@ -189,21 +189,21 @@ $(document).ready(function(){
         return false;
     });        
     
-    $("input[name=checkall]").click(function(){
+    /*$("input[name=checkall]").click(function(){
     
         if(!$(this).is(':checked'))
             $(this).parents('table').find('.checker span').removeClass('checked').find('input[type=checkbox]').attr('checked',false);
         else
             $(this).parents('table').find('.checker span').addClass('checked').find('input[type=checkbox]').attr('checked',true);
             
-    });    
+    });    */
     
     
-    $(".fancybox").fancybox();
+   /* $(".fancybox").fancybox();
     
     gallery();
     thumbs();
-    headInfo();
+    headInfo();*/
 });
 
 $(document).resize(function(){

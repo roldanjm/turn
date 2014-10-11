@@ -23,42 +23,32 @@
 
         <ul class="navigation">
             <li class="active">
-                <a href="index.html">
-                    <span class="isw-grid"></span><span class="text">Dashboard</span>
+                <a href="index.jsp">
+                    <span class="isw-grid"></span><span class="text">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="pacientes.jsp">
+                    <span class="isw-user"></span><span class="text">Pacientes</span>
+                </a>
+            </li>
+            <li>
+                <a href="profesionales.jsp">
+                    <span class="isw-archive"></span><span class="text">Profesionales</span>
                 </a>
             </li>
             <li class="openable">
                 <a href="#">
-                    <span class="isw-list"></span><span class="text">UI elements</span>
+                    <span class="isw-list"></span><span class="text">Administraci&oacute;n</span>
                 </a>
                 <ul>
                     <li>
-                        <a href="ui.html">
-                            <span class="icon-th"></span><span class="text">UI Elements</span>
+                        <a href="especialidades.jsp">
+                            <span class="icon-th"></span><span class="text">Especialidades</span>
                         </a>
-                    </li>
-                    <li>
-                        <a href="widgets.html">
-                            <span class="icon-th-large"></span><span class="text">Widgets</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="buttons.html">
-                            <span class="icon-chevron-right"></span><span class="text">Buttons</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="icons.html">
-                            <span class="icon-fire"></span><span class="text">Icons</span>
-                        </a>
-                    </li>
+                    </li>                    
                 </ul>
-            </li>
-            <li>
-                <a href="forms.html">
-                    <span class="isw-archive"></span><span class="text">Forms stuff</span>
-                </a>
-            </li>
+            </li>            
             <li class="openable">
                 <a href="#">
                     <span class="isw-chat"></span><span class="text">Messages</span>

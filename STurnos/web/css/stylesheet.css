@@ -834,3 +834,18 @@
 
 
 
+.page-header {
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+}
+.page-header h1 {
+    border-bottom: 1px solid #d5d5d5;
+    color: #30557f;
+    font-family: Cambria,Georgia,serif;
+    font-style: italic;
+    line-height: 40px;
+    margin: 0;
+    padding-bottom: 10px;
+    text-shadow: 1px 1px 0 #fff;
+}
