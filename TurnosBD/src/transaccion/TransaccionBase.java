@@ -38,10 +38,8 @@ public class TransaccionBase<E> {
         return todoOk;
     }
 
-    public boolean actualizar(Object obj, String campo_id) {
-        boolean todoOk = false;
-        new TransaccionRS().actualizarObjeto(obj, campo_id);
-        return todoOk;
+    public boolean actualizar(Object obj, String campo_id) {        
+        return new TransaccionRS().actualizarObjeto(obj, campo_id);
     }
 
     public List<E> getList(String query) {

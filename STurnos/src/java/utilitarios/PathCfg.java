@@ -16,8 +16,9 @@ public class PathCfg {
     public static final String ESPECIALIDADES_DEL = "/EspecialidadesDel";
     
     public static final String PACIENTES_PATH      = "/Pacientes";
-    public static final String PACIENTES_LIST      = "/Pacienteslist";
+    public static final String PACIENTES_LIST      = "/PacientesList";
     public static final String PACIENTES_EDIT      = "/PacientesEdit";
+    public static final String PACIENTES_DEL       = "/PacientesDel";
     
     public static final String PROFESIONALES_PATH = "/Profesionales";
     public static final String PROFESIONALES_LIST = "/ProfesionalesList";
@@ -26,6 +27,5 @@ public class PathCfg {
     
     public static final String OPTIONS = "/OpcionesLst";
     
-    
-    
+        
 }

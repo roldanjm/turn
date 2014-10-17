@@ -17,12 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TPaciente;
 import utilitarios.JsonRespuesta;
+import utilitarios.PathCfg;
 
 /**
  *
  * @author Diego
  */
-@WebServlet(name = "PacienteListServlet", urlPatterns = {"/PacienteList"})
+@WebServlet(name = "PacienteListServlet", urlPatterns = {PathCfg.PACIENTES_LIST})
 public class PacienteListServlet extends HttpServlet {
 
     /**

@@ -4,6 +4,8 @@
  */
 package Profesional;
 
+import bd.Profesional;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TProfesional;
+import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
 /**
@@ -78,7 +82,30 @@ public class ProfesionalDelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Gson gson = new Gson();
+        JsonRespuesta jr = new JsonRespuesta();
+        try{
+            Integer prof_id = Integer.parseInt(request.getParameter("prof_id"));
+            TProfesional tp = new TProfesional();
+            Profesional profesional = tp.getById(prof_id);
+            boolean baja = false;
+            if (profesional != null){
+                baja = tp.baja(profesional);
+                if (baja) {
+                    jr.setResult("OK");
+                }else{ jr.setResult("ERROR");}
+            } else{
+                jr.setResult("ERROR");
+            }
+            
+            
+        }catch(NumberFormatException ex){
+            jr.setResult("ERROR");
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println(gson.toJson(jr));
+        out.close();
     }
 
     /**

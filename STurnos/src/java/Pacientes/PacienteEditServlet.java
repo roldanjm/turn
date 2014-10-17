@@ -4,17 +4,22 @@
  */
 package Pacientes;
 
+import bd.Paciente;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TPaciente;
+import utilitarios.PathCfg;
+import utils.TFecha;
 
 /**
  *
  * @author Diego
  */
+@WebServlet(name="PacienteEditServlet",urlPatterns={PathCfg.PACIENTES_EDIT})
 public class PacienteEditServlet extends HttpServlet {
 
     /**
@@ -27,27 +32,9 @@ public class PacienteEditServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PacienteEditServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PacienteEditServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
-        }
-    }
+    
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -60,7 +47,17 @@ public class PacienteEditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       try{
+           int pac_id = Integer.parseInt(request.getParameter("pac_id"));
+           Paciente paciente = new TPaciente().getById(pac_id);
+           if (paciente != null){
+               request.setAttribute("paciente", paciente);
+           }
+       } catch (NumberFormatException ex){
+       
+       }                
+       request.getRequestDispatcher("pacientes_edit.jsp").forward(request, response);
+       return;
     }
 
     /**
@@ -75,7 +72,28 @@ public class PacienteEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        boolean todoOk = false;
+        Paciente paciente = new TPaciente().recuperarInstancia(request.getParameterMap());
+        if(paciente!=null){
+            Integer pac_id = 0;        
+            try{
+                pac_id = Integer.parseInt(request.getParameter("pac_id"));
+            }catch(NumberFormatException ex){
+                pac_id = 0;
+            }
+            if ( pac_id > 0){
+                todoOk = new TPaciente().actualizar(paciente, "pac_id");
+            } else {
+                paciente.setPac_fechaalta(TFecha.ahora("yyyy-MM-dd"));
+               todoOk = new TPaciente().alta(paciente) != 0;
+            }
+        }
+        if(todoOk){
+            response.sendRedirect(PathCfg.PACIENTES_PATH);
+            return;
+        }else{
+        }
+        return;
     }
 
     /**

@@ -7,6 +7,7 @@ package Especialidades;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-
+@WebServlet(name="EspecialidadBase",urlPatterns={PathCfg.ESPECIALIDADES_PATH})
 public class EspecialidadBase extends HttpServlet {
 
     /**
@@ -33,6 +34,7 @@ public class EspecialidadBase extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("especialidades.jsp").forward(request, response);
+        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -4,6 +4,8 @@
  */
 package Pacientes;
 
+import bd.Paciente;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,12 +13,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TPaciente;
+import utilitarios.JsonRespuesta;
+import utilitarios.PathCfg;
 
 /**
  *
  * @author Diego
  */
-@WebServlet(name = "PacienteDeleteServlet", urlPatterns = {"/PacienteDelete"})
+@WebServlet(name = "PacienteDeleteServlet", urlPatterns = {PathCfg.PACIENTES_DEL})
 public class PacienteDeleteServlet extends HttpServlet {
 
     /**
@@ -77,7 +82,30 @@ public class PacienteDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+           Gson gson = new Gson();
+        JsonRespuesta jr = new JsonRespuesta();
+        try{
+            Integer pac_id = Integer.parseInt(request.getParameter("pac_id"));
+            TPaciente tp = new TPaciente();
+            Paciente paciente = tp.getById(pac_id);
+            boolean baja = false;
+            if (paciente != null){
+                baja = tp.baja(paciente);
+                if (baja) {
+                    jr.setResult("OK");
+                }else{ jr.setResult("ERROR");}
+            } else{
+                jr.setResult("ERROR");
+            }
+            
+            
+        }catch(NumberFormatException ex){
+            jr.setResult("ERROR");
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println(gson.toJson(jr));
+        out.close();
     }
 
     /**

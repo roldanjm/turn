@@ -1,11 +1,11 @@
 <div class="breadLine">
 
-    <ul class="breadcrumb">
+<!--    <ul class="breadcrumb">
         <li><a href="#">Simple Admin</a> <span class="divider">></span></li>
         <li class="active">Dashboard</li>
-    </ul>
+    </ul>-->
 
-    <ul class="buttons">
+<!--    <ul class="buttons">
         <li>
             <a href="#" class="link_bcPopupList"><span class="icon-user"></span><span class="text">Users list</span></a>
 
@@ -89,6 +89,6 @@
                 </div>
             </div>
         </li>
-    </ul>
+    </ul>-->
 
 </div>

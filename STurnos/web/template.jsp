@@ -10,6 +10,9 @@
     <jsp:include page="tpl_menu.jsp"/>
     <div class="content">
         <jsp:include page="tpl_menusuperior.jsp"/>
+        <div class="page-header">
+                <h1>Categor&iacute;a <small>/ Administraci&oacute;n</small></h1>
+        </div>
         <div class="workplace">
 
             <div class="row-fluid">

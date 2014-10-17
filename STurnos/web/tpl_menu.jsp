@@ -1,13 +1,14 @@
+<%@page import="utilitarios.PathCfg"%>
 <div class="menu">
 
         <div class="breadLine">
-            <div class="arrow"></div>
-            <div class="adminControl active">
+            <!--<div class="arrow"></div>-->
+<!--            <div class="adminControl active">
                 Hi, Aqvatarius
-            </div>
+            </div>-->
         </div>
 
-        <div class="admin">
+<!--        <div class="admin">
             <div class="image">
                 <img src="img/users/aqvatarius.jpg" class="img-polaroid"/>
             </div>
@@ -19,7 +20,7 @@
             <div class="info">
                 <span>Welcom back! Your last visit: 24.10.2012 in 19:55</span>
             </div>
-        </div>
+        </div>-->
 
         <ul class="navigation">
             <li class="active">
@@ -28,12 +29,12 @@
                 </a>
             </li>
             <li>
-                <a href="pacientes.jsp">
+                <a href='<%= PathCfg.PACIENTES_PATH %>'>
                     <span class="isw-user"></span><span class="text">Pacientes</span>
                 </a>
             </li>
             <li>
-                <a href="profesionales.jsp">
+                <a href="<%= PathCfg.PROFESIONALES_PATH %>">
                     <span class="isw-archive"></span><span class="text">Profesionales</span>
                 </a>
             </li>
@@ -43,13 +44,13 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="especialidades.jsp">
+                        <a href="<%= PathCfg.ESPECIALIDADES_PATH %>">
                             <span class="icon-th"></span><span class="text">Especialidades</span>
                         </a>
                     </li>                    
                 </ul>
             </li>            
-            <li class="openable">
+<!--            <li class="openable">
                 <a href="#">
                     <span class="isw-chat"></span><span class="text">Messages</span>
                 </a>
@@ -189,16 +190,10 @@
                     <li><a href="503.html"><span class="icon-warning-sign"></span><span class="text">503 Service Unavailable</span></a></li>
                     <li><a href="504.html"><span class="icon-warning-sign"></span><span class="text">504 Gateway Timeout</span></a></li>
                 </ul>
-            </li>
+            </li>-->
         </ul>
 
-        <div class="dr"><span></span></div>
-
-        <div class="widget-fluid">
-            <div id="menuDatepicker"></div>
-        </div>
-
-        <div class="dr"><span></span></div>
+<!--        <div class="dr"><span></span></div>
 
         <div class="widget">
 
@@ -221,13 +216,13 @@
                 </div>
                 <div class="rSpace">
                     <h3>Today</h3>
-                    <span class="mChartBar" sparkType="bar" sparkBarColor="white"><!--240,234,150,290,310,240,210,400,320,198,250,222,111,240,221,340,250,190--></span>
+                    <span class="mChartBar" sparkType="bar" sparkBarColor="white">240,234,150,290,310,240,210,400,320,198,250,222,111,240,221,340,250,190</span>
                     <span>&nbsp;</span>
                     <span>65% <b>New</b></span>
                     <span>35% <b>Returning</b></span>
                 </div>
             </div>
 
-        </div>
+        </div>-->
 
     </div>

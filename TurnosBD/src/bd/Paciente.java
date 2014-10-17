@@ -22,7 +22,7 @@ Integer loc_id = 0;
 Integer os_id;
 String pac_telefono = "";
 String pac_celular = "";
-String pac_sexo = "";
+Integer pac_sexo = 0;
 String pac_observaciones = "";
 String pac_mail = "";
 
@@ -39,7 +39,7 @@ public Integer getLoc_id (){return this.loc_id;}
 public Integer getOs_id (){return this.os_id;}
 public String getPac_telefono(){return this.pac_telefono;}
 public String getPac_celular(){return this.pac_celular;}
-public String getPac_sexo(){return this.pac_sexo;}
+public Integer getPac_sexo(){return this.pac_sexo;}
 public String getPac_observaciones(){return this.pac_observaciones;}
 public String getPac_mail(){return this.pac_mail;}
 
@@ -98,7 +98,7 @@ public String getPac_mail(){return this.pac_mail;}
       this.pac_celular = valor;
       return this;
     }
-    public Paciente setPac_sexo(String valor){
+    public Paciente setPac_sexo(Integer valor){
       this.pac_sexo = valor;
       return this;
     }

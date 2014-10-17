@@ -16,7 +16,7 @@
         <div class="workplace">
 
             <div class="page-header">
-                <h1>Especialidad <small>/ Administración</small></h1>
+                <h1>Especialidad <small>/ Administraci&oacute;n</small></h1>
             </div>
             <div class="row-fluid">
                 <div class="span12">
@@ -58,7 +58,7 @@
 
                                 <div class="item clearfix">
                                     <p>                                                      
-                                        <button type="button" class="btn btn-large span12">Nuevo Paciente</button>                                        
+                                        <button type="button" class="btn btn-large span12">Nueva Especialidad</button>                                        
                                     </p>
                                 </div>
                             </div>

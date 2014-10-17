@@ -532,9 +532,9 @@ public class TransaccionRS {
 
                         System.out.println(nameParameter);
                         miMetodo.invoke(objeto, parametro);
-                    } 
+                    }
                 }
-            }            
+            }
             return objeto;
         } catch (IllegalArgumentException ex) {
             return null;

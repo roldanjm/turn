@@ -4,13 +4,15 @@
  */
 package Profesional;
 
+import bd.Profesional;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TPaciente;
+import transaccion.TProfesional;
 import utilitarios.PathCfg;
 
 /**
@@ -30,27 +32,8 @@ public class ProfesionalesEditServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProfesionalesEditServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProfesionalesEditServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
-        }
-    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -63,7 +46,14 @@ public class ProfesionalesEditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try{
+            Integer prof_id = Integer.parseInt(request.getParameter("prof_id"));
+            Profesional profesional = new TProfesional().getById(prof_id);
+            request.setAttribute("profesional", profesional);
+        } catch(NumberFormatException ex){
+        }
+        request.getRequestDispatcher("profesionales_edit.jsp").forward(request, response);
+        return;
     }
 
     /**
@@ -78,7 +68,28 @@ public class ProfesionalesEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        boolean todoOk = false;
+        Profesional profesional = new TProfesional().recuperarInstancia(request.getParameterMap());
+        Integer prof_id = 0;
+        if(profesional!=null){            
+            try{
+                prof_id = Integer.parseInt(request.getParameter("prof_id"));
+            }catch(NumberFormatException ex){
+                prof_id = 0;
+            }
+            if ( prof_id > 0){
+                todoOk = new TProfesional().actualizar(profesional, "prof_id");
+            } else {                
+               todoOk = new TProfesional().alta(profesional) != 0;
+            }
+        }
+        if(todoOk){
+            response.sendRedirect(PathCfg.PROFESIONALES_PATH);
+            return;
+        }else{ 
+            response.sendRedirect(PathCfg.PROFESIONALES_EDIT+ "?prof_id=" + prof_id);
+        }
+        return;        
     }
 
     /**

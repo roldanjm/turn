@@ -11,10 +11,74 @@
     <div class="content">
         <jsp:include page="tpl_menusuperior.jsp"/>
         <div class="workplace">
-            <div id="tablaPofesional"></div>
+            <div class="page-header">
+                <h1>Profesionales <small>/ Administraci&oacute;n</small></h1>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span12">
+
+                    <div class="span8">
+                        <div class="span12">
+                            <div class="head clearfix">
+                                <div class="isw-grid"></div>
+                                <h1>Busqueda</h1>
+                                <ul class="buttons">                                        
+                                <li class="toggle"><a href="#"></a></li>
+                            </ul> 
+                            </div>
+                            <div class="block-fluid">                        
+
+                                <div class="row-form clearfix">
+                                    <div class="span4"><input type="text" value="span4"/></div>
+                                    <div class="span4"><input type="text" value="span4"/></div>
+                                    <div class="span4"><input type="text" value="span4"/></div>                            
+                                </div>                                                               
+
+                                                                                                                     
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="span4">
+                        <div class="head clearfix">
+                            <div class="isw-cloud"></div>
+                            <h1>Acciones</h1>
+                            <ul class="buttons">                                        
+                                <li class="toggle"><a href="#"></a></li>
+                            </ul> 
+                        </div>
+                        <div class="block users scrollBox">
+
+                            <div class="scroll" style="">
+
+                                <div class="item clearfix">
+                                    <p>                                                      
+                                        <button type="button" class="btn btn-large span12" onclick="location.href = '<%= PathCfg.PROFESIONALES_EDIT %>'">Nuevo Profesional</button>                                        
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="row-fluid">
+                        <div class="span12">
+                            
+                        </div>
+                    </div>-->
+                </div>
+
+
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div id="tablaPofesional"></div> 
+                </div>
+            </div>
         </div>
-    </div>
         
+    </div>
+                   
     <script type="text/javascript">
         $('#tablaPofesional').jtable({
             title: 'Administraci&oacute;n de Profesionales',
@@ -24,8 +88,8 @@
             //pageSize: 10, //Set page size (default: 10)                                                                                                                
             actions: {
                 listAction:  '<%= PathCfg.PROFESIONALES_LIST %>',
-                updateAction:'<%= PathCfg.PROFESIONALES_EDIT %>',                                             
-                createAction:'<%= PathCfg.PROFESIONALES_EDIT %>',
+//                updateAction:'<%= PathCfg.PROFESIONALES_EDIT %>',                                             
+//                createAction:'<%= PathCfg.PROFESIONALES_EDIT %>',
                 deleteAction:'<%= PathCfg.PROFESIONALES_DEL %>',
                 },
                 fields: {
@@ -45,8 +109,21 @@
                         title:'Especialidad',
                         options:'<%=PathCfg.OPTIONS%>?type=Especialidades'                      
                     },
-                    usu_id:{list:false,edit:false}
-
+                    usu_id:{list:false,edit:false},
+                    Editar: {
+                            title: '',
+                            width: '2%',
+                            sorting: false,
+                            edit: false,
+                            create: false,
+                            display: function(data) {
+                                var $img2 = $('<button class="btn btn-small">Editar</button>');
+                                $img2.click(function() {
+                                    window.location = "<%=PathCfg.PROFESIONALES_EDIT%>" + '?prof_id=' + data.record.prof_id 
+                                });
+                                return $img2
+                           }
+                    }
                 } 
             });
         jQuery(document).ready(function() {                                                        

@@ -4,6 +4,7 @@
  */
 package utilitarios;
 
+import bd.Bd_localidad;
 import bd.Especialidad;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TEspecialidad;
+import transaccion.TLocalidad;
 
 /**
  *
@@ -52,8 +54,26 @@ public class OptionsServlet extends HttpServlet {
               jr.setOptions(listaOpciones);
             } 
         }
-        else{
+        else if (type.equalsIgnoreCase("Localidades")){
+            try{
+                int prov_id = Integer.parseInt(request.getParameter("prov_id"));
             
+                List<Bd_localidad> list = new TLocalidad().getList(prov_id);
+                List<Opcion> listaOpciones = new ArrayList();
+                if (list!=null){
+                  jr.setResult("OK");
+
+                  for (Bd_localidad loc:list){
+                      listaOpciones.add(new Opcion(loc.getLoc_id(),loc.getLoc_descripcion()));
+                  }
+                  jr.setOptions(listaOpciones);
+                }
+            } catch(NumberFormatException nfe){
+                
+            } 
+                        
+        } else {
+        
         }
                 
                 
