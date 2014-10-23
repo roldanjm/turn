@@ -2,28 +2,24 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Profesional;
+package Especialidades;
 
-import bd.Profesional;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import transaccion.TProfesional;
-import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
 /**
  *
  * @author Diego
  */
-@WebServlet(name="ProfesionalesListServlet",urlPatterns={PathCfg.PROFESIONALES_LIST})
-public class ProfesionalesListServlet extends HttpServlet {
+@WebServlet(name="EspecialidadServlet",urlPatterns={PathCfg.ESPECIALIDADES_PATH})
+public class EspecialidadServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -35,29 +31,10 @@ public class ProfesionalesListServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        try {
-            JsonRespuesta jr = new JsonRespuesta();            
-            List<Profesional> lista = new TProfesional().getList();
-            if (lista != null) {
-                jr.setTotalRecordCount(lista.size());                  
-            } else {
-                jr.setTotalRecordCount(0);
-            }            
-            jr.setResult("OK");
-            jr.setRecords(lista);
-            
-            String jsonResult = new Gson().toJson(jr);
-            System.out.println(jsonResult);
-            out.print(jsonResult);
-        } finally {            
-            out.close();
-        }
+        request.getRequestDispatcher("especialidades.jsp").forward(request, response);
+        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

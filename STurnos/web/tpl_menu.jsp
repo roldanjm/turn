@@ -28,6 +28,11 @@
                     <span class="isw-grid"></span><span class="text">Inicio</span>
                 </a>
             </li>
+            <li class="">
+                <a href="<%=PathCfg.AGENDA_PATH%>">
+                    <span class="isw-calendar"></span><span class="text">Agendas</span>
+                </a>
+            </li>            
             <li>
                 <a href='<%= PathCfg.PACIENTES_PATH %>'>
                     <span class="isw-user"></span><span class="text">Pacientes</span>

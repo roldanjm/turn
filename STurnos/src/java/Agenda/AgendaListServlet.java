@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Profesional;
+package Agenda;
 
-import bd.Profesional;
+import bd.Agenda;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import transaccion.TProfesional;
+import transaccion.TAgenda;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -22,8 +22,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="ProfesionalesListServlet",urlPatterns={PathCfg.PROFESIONALES_LIST})
-public class ProfesionalesListServlet extends HttpServlet {
+@WebServlet(name="AgendaListServlet",urlPatterns={PathCfg.AGENDA_LIST})
+public class AgendaListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -35,15 +35,20 @@ public class ProfesionalesListServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+  
+ protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+  response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
         try {
-            JsonRespuesta jr = new JsonRespuesta();            
-            List<Profesional> lista = new TProfesional().getList();
+            JsonRespuesta jr = new JsonRespuesta();
+            int  prof_id = 0;
+            try{
+                prof_id = Integer.parseInt(request.getParameter("prof_id"));
+            } catch(NumberFormatException ex){ }
+            
+            List<Agenda> lista = new TAgenda().getListByProf(prof_id);
             if (lista != null) {
                 jr.setTotalRecordCount(lista.size());                  
             } else {
@@ -57,10 +62,9 @@ public class ProfesionalesListServlet extends HttpServlet {
             out.print(jsonResult);
         } finally {            
             out.close();
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+        } 
+ }
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -73,7 +77,7 @@ public class ProfesionalesListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       processRequest(request,response);
     }
 
     /**
@@ -88,7 +92,7 @@ public class ProfesionalesListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       processRequest(request,response);
     }
 
     /**

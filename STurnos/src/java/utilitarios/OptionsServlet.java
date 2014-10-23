@@ -6,6 +6,7 @@ package utilitarios;
 
 import bd.Bd_localidad;
 import bd.Especialidad;
+import bd.Profesional;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TEspecialidad;
 import transaccion.TLocalidad;
+import transaccion.TProfesional;
 
 /**
  *
@@ -41,50 +43,74 @@ public class OptionsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         JsonRespuesta jr = new JsonRespuesta();
-        String type =  request.getParameter("type");
+        List<Opcion> lstOpciones = new ArrayList();
+        String type =  request.getParameter("type");        
         if (type.equalsIgnoreCase("Especialidades")){
-            List<Especialidad> list = new TEspecialidad().getList();
-            List<Opcion> listaOpciones = new ArrayList();
-            if (list!=null){
-              jr.setResult("OK");
-              
-              for (Especialidad esp:list){
-                  listaOpciones.add(new Opcion(esp.getEspec_id(),esp.getEspec_detalle()));                  
-              }
-              jr.setOptions(listaOpciones);
-            } 
+            lstOpciones = getListEspecialidades();
         }
         else if (type.equalsIgnoreCase("Localidades")){
             try{
                 int prov_id = Integer.parseInt(request.getParameter("prov_id"));
-            
-                List<Bd_localidad> list = new TLocalidad().getList(prov_id);
-                List<Opcion> listaOpciones = new ArrayList();
-                if (list!=null){
-                  jr.setResult("OK");
-
-                  for (Bd_localidad loc:list){
-                      listaOpciones.add(new Opcion(loc.getLoc_id(),loc.getLoc_descripcion()));
-                  }
-                  jr.setOptions(listaOpciones);
-                }
-            } catch(NumberFormatException nfe){
-                
-            } 
+                lstOpciones = getListLocalidades(prov_id);                 
+            } catch(NumberFormatException nfe){ } 
+                        
+        } if (type.equalsIgnoreCase("Profesionales")){
+            lstOpciones = getListProgesionales();
+                       
                         
         } else {
-        
+       
         }
                 
-                
         try {
+            
+          if(lstOpciones!=null) {
+            jr.setResult("OK");
+            jr.setOptions(lstOpciones);
+          } else {
+              jr.setResult("OK");
+          }
            out.println(new Gson().toJson(jr));
         } finally {            
             out.close();
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    public List<Opcion> getListEspecialidades(){
+        List<Opcion> lstOpciones = null;
+        List<Especialidad> list = new TEspecialidad().getList();
+            
+        if (list!=null){
+          lstOpciones = new ArrayList();              
+          for (Especialidad esp:list){
+              lstOpciones.add(new Opcion(esp.getEspec_id(),esp.getEspec_detalle()));                  
+          }              
+        } 
+        return lstOpciones;
+    }
+    public List<Opcion> getListLocalidades(Integer prov_id){
+        List<Opcion> lstOpciones = null;
+        List<Bd_localidad> list = new TLocalidad().getList(prov_id);
+        
+        if (list!=null){
+          lstOpciones = new ArrayList();
+          for (Bd_localidad loc:list){
+              lstOpciones.add(new Opcion(loc.getLoc_id(),loc.getLoc_descripcion()));
+          }                  
+        }        
+        return lstOpciones;
+    }
+    public List<Opcion> getListProgesionales(){
+        List<Opcion> lstOpciones = null;
+        List<Profesional> list = new TProfesional().getList();                
+            if (list!=null){
+                lstOpciones = new ArrayList();
+                for (Profesional prof:list){
+                    lstOpciones.add(new Opcion(prof.getProf_id(),prof.getProf_apellido() + ", " + prof.getProf_nombre()));
+                }                  
+            }            
+        return lstOpciones;
+    }
     /**
      * Handles the HTTP
      * <code>GET</code> method.

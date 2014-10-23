@@ -59,7 +59,7 @@
 
                                 <div class="item clearfix">
                                     <p>                                                      
-                                        <button type="button" class="btn btn-large span12">Nuevo Paciente</button>                                        
+                                        <button type="button" class="btn btn-large span12"onclick="location.href = '<%= PathCfg.PACIENTES_EDIT %>'">Nuevo Paciente</button>                                        
                                     </p>
                                 </div>
                             </div>
@@ -79,10 +79,8 @@
     </div>
         
     <script type="text/javascript">
-
-        jQuery(document).ready(function() {
             $('#tablaPacientesList').jtable({
-                title: 'Lista de Pacientes',
+                title: 'Administraci&oacute;n de Pacientes',
                 paging: true,
                 sorting: true,
                 pageSize: 10, //Set page size (default: 10)                                                                                                                
@@ -181,7 +179,8 @@
                         }, */                                                  
                     } 
                 });
-                                            
+
+        jQuery(document).ready(function() {                     
           $('#tablaPacientesList').jtable('load');
         });
             </script>

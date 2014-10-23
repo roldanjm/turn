@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Profesional;
+package Pacientes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,8 +17,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="ProfesionalesBase",urlPatterns={PathCfg.PROFESIONALES_PATH})
-public class ProfesionalesBase extends HttpServlet {
+@WebServlet(name = "PacienteServlet", urlPatterns = {PathCfg.PACIENTES_PATH})
+public class PacienteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -32,8 +32,9 @@ public class ProfesionalesBase extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.getRequestDispatcher("profesionales.jsp").forward(request, response);
-       
+        
+        request.getRequestDispatcher("pacientes.jsp").forward(request, response);
+        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

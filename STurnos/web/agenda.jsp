@@ -1,8 +1,14 @@
+<%@page import="bd.Profesional"%>
+<%@page import="transaccion.TProfesional"%>
+<%@page import="java.util.List"%>
 <%@page import="utilitarios.PathCfg"%>
+<%
+ List<Profesional> lstProfesional = new TProfesional().getList();    
+%>
 <html>  
     <head>
         <jsp:include page="tpl_header.jsp"/>
-        <script type='text/javascript' src='js/plugins/jtable/jquery.jtable.min.js'></script>    
+        <script type='text/javascript' src='js/plugins/jtable/jquery.jtable.min.js'></script>
     </head>
 </html>
 
@@ -11,10 +17,9 @@
     <jsp:include page="tpl_menu.jsp"/>
     <div class="content">
         <jsp:include page="tpl_menusuperior.jsp"/>
-        
         <div class="workplace">
             <div class="page-header">
-                    <h1>Categor&iacute;a <small>/ Administraci&oacute;n</small></h1>
+                    <h1>Agenda <small>/ Administraci&oacute;n</small></h1>
             </div>
             <div class="row-fluid">
                 <div class="span12">
@@ -31,9 +36,18 @@
                             <div class="block-fluid">                        
 
                                 <div class="row-form clearfix">
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>                            
+                                    <div class="span4"><label for="prof_id">Profesional:</label>
+                                    <select name="prof_id" id="prof_id">
+                                        <option value="0">Seleccionar el profesional </option>
+                                        <% for (Profesional prof: lstProfesional) {%>
+                                        <option value="<%=prof.getProf_id()%>">
+                                            <%= prof.getProf_apellido() + ", " +prof.getProf_nombre()%>
+                                        </option>
+                                        <% }%>
+                                    </select>                                    
+                                    </div>
+                                    <div class="span4"><label name="agenda_dia">Dia:</label><input type="text" name="agenda_dia" id="agenda_dia" value="span4"/></div>
+                                    
                                 </div>                                                               
 
                                                                                                                      
@@ -51,12 +65,10 @@
                             </ul> 
                         </div>
                         <div class="block users scrollBox">
-
                             <div class="scroll" style="">
-
                                 <div class="item clearfix">
                                     <p>                                                      
-                                        <button type="button" class="btn btn-large span12">Nuevo Paciente</button>                                        
+                                        <button type="button" class="btn btn-large span12" onclick="location.href = '<%= PathCfg.AGENDA_EDIT%>'">Nueva Agenda</button>                                        
                                     </p>
                                 </div>
                             </div>
@@ -69,29 +81,45 @@
             </div>
             <div class="row-fluid">
                 <div class="span12">
-                    <div id="idTabla"></div>
+                    <div id="tablaAgenda"></div>
                 </div>
             </div>
         </div>
-        <script language="javascript">
-            $('#idTabla').jtable({
-                title:'Titulo de la tabla',
-                paging: true,
-                sorting: true,
-                pageSize: 10, //Set page size (default: 10)    
+        <script>
+            var $prof_id = $('#prof_id');            
+            $('#tablaAgenda').jtable({
+                title:'Administraci&oacute;n de agenda',
                 actions:{
-                    listAction:'',
-                    updateAction:'',
-                    createAction:'',
-                    deleteAction:''
+                    listAction:'<%= PathCfg.AGENDA_LIST %>',
+                    deleteAction:'<%= PathCfg.AGENDA_DEL %>'
                 },
                 fields:{
-                    
-                    espe_id:{
-                        title:'',
-                        options:'<%=PathCfg.OPTIONS%>?type=Especialidades'                      
+                    agenda_id:{                        
+                        key:true,
+                        list:false,
                     },
-                     Editar: {
+                    prof_id:{                        
+                        title:'Profesional',
+                        options:'<%=PathCfg.OPTIONS%>?type=Profesionales'                    
+                    },
+                    agenda_dia:{
+                        title:'Dia',
+                    },
+                    agenda_consultorio:{
+                        title:'Consultorio',
+                    },
+                    agenda_hinicio:{
+                        title:'H. Inicio',
+                    },
+                    agenda_hfin:{
+                        title:'H. Fin',
+                    },
+                    agenda_alta:{
+                        title:'',
+                        list:false,
+                        edit:false,
+                    },
+                    Editar: {
                             title: '',
                             width: '2%',
                             sorting: false,
@@ -100,16 +128,24 @@
                             display: function(data) {
                                 var $img2 = $('<button class="btn btn-small">Editar</button>');
                                 $img2.click(function() {
-                                    window.location = "<%=PathCfg.PROFESIONALES_EDIT%>" + '?prof_id=' + data.record.prof_id 
+                                    window.location = "<%=PathCfg.AGENDA_EDIT%>" + '?agenda_id=' + data.record.agenda_id 
                                 });
                                 return $img2
                            }
                     }
-                }
+
+                },
+            });
+            $prof_id.change(function(){                
+                loadTabla($(this).val());
             });
             $(document).ready(function(){
-               $('#idTabla').jtable('load');
+                loadTabla($('#prof_id').val());
             });
+            function loadTabla(id){                
+                $('#tablaAgenda').jtable('load',{prof_id:id});
+            }
+                
         </script>
 </body>
 </html>

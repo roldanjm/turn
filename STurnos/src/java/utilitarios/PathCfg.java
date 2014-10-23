@@ -27,5 +27,10 @@ public class PathCfg {
     
     public static final String OPTIONS = "/OpcionesLst";
     
+    public static final String AGENDA_PATH = "/Agenda";
+    public static final String AGENDA_LIST = "/AgendaList";
+    public static final String AGENDA_EDIT = "/AgendaEdit";
+    public static final String AGENDA_DEL  = "/AgendaDel";
+    
         
 }

@@ -4,6 +4,7 @@
  */
 package turnosbd;
 
+import bd.Agenda;
 import bd.Empleado;
 import bd.Especialidad;
 import bd.Obra_social;
@@ -12,6 +13,7 @@ import bd.Rol;
 import bd.Usuario;
 import java.util.Iterator;
 import java.util.List;
+import transaccion.TAgenda;
 import transaccion.TEmpleado;
 import transaccion.TEspecialidad;
 import transaccion.TObraSocial;
@@ -30,6 +32,12 @@ public class TurnosBD {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        List<Agenda> list = new TAgenda().getListByProf(0);
+        for (Iterator<Agenda> it = list.iterator(); it.hasNext();) {
+            Agenda agenda = it.next();
+            System.out.println(agenda.getProf_id());        
+        }
+
         // TODO code application logic here
         /* ALTA DE ROLES */
         /* new TRol().alta(new Rol().setRol_descripcion("Rol 1"));
@@ -100,27 +108,27 @@ public class TurnosBD {
         //     new TEspecialidad().alta(new Especialidad().setEspec_detalle("Especialidad 2"));
         //     new TEspecialidad().alta(new Especialidad().setEspec_detalle("Especialidad 3"));
         //     new TEspecialidad().alta(new Especialidad().setEspec_detalle("Especialidad 4"));
-            List<Especialidad> listEspecialidad = new TEspecialidad().getList();
-            for (Especialidad espe : listEspecialidad) {
-                    System.out.println(espe.getEspec_detalle());
-            }
+        //            List<Especialidad> listEspecialidad = new TEspecialidad().getList();
+        //            for (Especialidad espe : listEspecialidad) {
+        //                    System.out.println(espe.getEspec_detalle());
+        //            }
         //Usuario user = new TUsuario().getByUsername("dgiulian");
-//        Usuario user = new Usuario()
-//                                .setUsu_username("petealf")
-//                                .setUsu_fcreacion(TFecha.ahora())
-//                                .setUsu_hash("987654321")
-//                                .setUsu_pass("987654321")
-//                                .setRol_id(1);
-//        new TUsuario().alta(user);
+        //        Usuario user = new Usuario()
+        //                                .setUsu_username("petealf")
+        //                                .setUsu_fcreacion(TFecha.ahora())
+        //                                .setUsu_hash("987654321")
+        //                                .setUsu_pass("987654321")
+        //                                .setRol_id(1);
+        //        new TUsuario().alta(user);
         /** ALTA DE EMPLEADO */
-//        Usuario user = new TUsuario().getByUsername("petealf");
-//        Empleado emp =  new Empleado()
-//                .setEmp_nombre("Pedro")
-//                .setEmp_apellido("Alfonso")
-//                .setEmp_direccion("La concha de Paula Chavez")
-//                .setEmp_nrodoc("00666333")
-//                .setUsu_id(user.getUsu_id());
-//        new TEmpleado().alta(emp);
+        //        Usuario user = new TUsuario().getByUsername("petealf");
+        //        Empleado emp =  new Empleado()
+        //                .setEmp_nombre("Pedro")
+        //                .setEmp_apellido("Alfonso")
+        //                .setEmp_direccion("La concha de Paula Chavez")
+        //                .setEmp_nrodoc("00666333")
+        //                .setUsu_id(user.getUsu_id());
+        //        new TEmpleado().alta(emp);
         
         
         
