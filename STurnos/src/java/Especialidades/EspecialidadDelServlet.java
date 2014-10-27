@@ -1,15 +1,13 @@
-package Especialidades;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package Especialidades;
 
 import bd.Especialidad;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +21,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name = "EspecialidadesListServlet", urlPatterns = {PathCfg.ESPECIALIDADES_LIST})
-public class EspecialidadesListServlet extends HttpServlet {
+@WebServlet(name="EspecialidadDelServlet",urlPatterns={PathCfg.ESPECIALIDADES_DEL})
+public class EspecialidadDelServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,26 +38,30 @@ public class EspecialidadesListServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
         try {
+            String espec_id = request.getParameter("espec_id");
+            int id = Integer.parseInt(espec_id);
+            TEspecialidad te = new TEspecialidad();
             JsonRespuesta jr = new JsonRespuesta();
-            List<Especialidad> lista = new TEspecialidad().getList();
-            if (lista != null) {
-                jr.setTotalRecordCount(lista.size());                  
-            } else {
-                jr.setTotalRecordCount(0);
-            }            
-            jr.setResult("OK");
-            jr.setRecords(lista);
-
-            Gson gson = new Gson();
-            String jsonResult = gson.toJson(jr);
-            System.out.println(jsonResult);
-            out.print(jsonResult);
+            boolean todoOk = true;
+            if(id!=0){
+                Especialidad esp = te.getById(id);
+                if (esp!=null) {
+                    todoOk = te.baja(esp);
+                } else todoOk = false;                            
+            } else todoOk = false;
+            
+            if (todoOk){
+                jr.setResult("OK");
+            }
+            else {
+                jr.setResult("ERROR");
+                jr.setMessage("No se pudo eliminar la especialidad");                
+            }
+            out.println(new Gson().toJson(jr));
         } finally {            
             out.close();
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

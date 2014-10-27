@@ -22,8 +22,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="EspecialidadesEditServlet",urlPatterns={PathCfg.ESPECIALIDADES_EDIT})
-public class EspecialidadesEditServlet extends HttpServlet {
+@WebServlet(name="EspecialidadEditServlet",urlPatterns={PathCfg.ESPECIALIDADES_EDIT})
+public class EspecialidadEditServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
