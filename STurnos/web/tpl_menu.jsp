@@ -52,7 +52,12 @@
                         <a href="<%= PathCfg.ESPECIALIDADES_PATH %>">
                             <span class="icon-th"></span><span class="text">Especialidades</span>
                         </a>
-                    </li>                    
+                    </li>
+                    <li>
+                        <a href="<%= PathCfg.OBRASOCIAL_PATH%>">
+                            <span class="icon-th"></span><span class="text">Obras Sociales</span>
+                        </a>
+                    </li>                       
                 </ul>
             </li>            
 <!--            <li class="openable">

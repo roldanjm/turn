@@ -2,18 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Especialidades;
+package ObraSocial;
 
-import bd.Especialidad;
+import bd.Obra_social;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import transaccion.TEspecialidad;
+import transaccion.TObraSocial;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -21,8 +22,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="EspecialidadDelServlet",urlPatterns={PathCfg.ESPECIALIDADES_DEL})
-public class EspecialidadDelServlet extends HttpServlet {
+@WebServlet(name="ObraSocialEditServlet",urlPatterns={PathCfg.OBRASOCIAL_EDIT})
+public class ObraSocialEditServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -39,32 +40,22 @@ public class EspecialidadDelServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String espec_id = request.getParameter("espec_id");
-            int id = Integer.parseInt(espec_id);
-            TEspecialidad te = new TEspecialidad();
-            JsonRespuesta jr = new JsonRespuesta();
-            boolean todoOk = true;
-            if(id!=0){
-                Especialidad esp = te.getById(id);
-                if (esp!=null) {
-                    todoOk = te.baja(esp);
-                } else todoOk = false;                            
-            } else todoOk = false;
-            
-            if (todoOk){
-                jr.setResult("OK");
-            }
-            else {
-                jr.setResult("ERROR");
-                jr.setMessage("No se pudo eliminar la especialidad");                
-            }
-            out.println(new Gson().toJson(jr));
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ObraSocialEditServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ObraSocialEditServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         } finally {            
             out.close();
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -77,7 +68,7 @@ public class EspecialidadDelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /**
@@ -92,30 +83,27 @@ public class EspecialidadDelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            String espec_id = request.getParameter("espec_id");
-            int id = Integer.parseInt(espec_id);
-            TEspecialidad te = new TEspecialidad();
-            JsonRespuesta jr = new JsonRespuesta();
-            boolean todoOk = true;
-            if(id!=0){
-                Especialidad esp = te.getById(id);
-                if (esp!=null) {
-                    todoOk = te.baja(esp);
-                } else todoOk = false;                            
-            } else todoOk = false;
+        JsonRespuesta jr = new JsonRespuesta();        
+        TObraSocial tos = new TObraSocial();
+        
+        boolean alta = request.getParameter("os_id") == null;        
+
+            Obra_social os = tos.recuperarInstancia(request.getParameterMap());
+            if (alta) {
+                tos.alta(os);
+            } else {
+                tos.actualizar(os);
+            }
             
-            if (todoOk){
-                jr.setResult("OK");
-            }
-            else {
-                jr.setResult("ERROR");
-                jr.setMessage("No se pudo eliminar la especialidad");                
-            }
-            out.println(new Gson().toJson(jr));
-        } finally {            
+            jr.setResult("OK");
+            jr.setRecord(os);
+        
+        String toJson = new Gson().toJson(jr);
+        System.out.println(toJson);
+        PrintWriter out = response.getWriter();
+        try{
+            out.println(toJson);
+        } finally {
             out.close();
         }
     }

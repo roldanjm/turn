@@ -20,5 +20,9 @@ public class TObraSocial extends TransaccionBase<Obra_social>{
         String query = String.format("select * from obra_social where os_id = %d",id);
         return super.getById(query);
     }
+
+    public boolean actualizar(Obra_social os) {
+        return super.actualizar(os, "os_id");
+    }
     
 }

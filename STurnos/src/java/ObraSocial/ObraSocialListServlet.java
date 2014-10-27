@@ -2,18 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Especialidades;
+package ObraSocial;
 
-import bd.Especialidad;
+import bd.Obra_social;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import transaccion.TEspecialidad;
+import transaccion.TObraSocial;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -21,8 +22,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="EspecialidadDelServlet",urlPatterns={PathCfg.ESPECIALIDADES_DEL})
-public class EspecialidadDelServlet extends HttpServlet {
+@WebServlet(name="ObraSocialListServlet",urlPatterns={PathCfg.OBRASOCIAL_LIST})
+public class ObraSocialListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -36,32 +37,28 @@ public class EspecialidadDelServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+       response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
-            String espec_id = request.getParameter("espec_id");
-            int id = Integer.parseInt(espec_id);
-            TEspecialidad te = new TEspecialidad();
             JsonRespuesta jr = new JsonRespuesta();
-            boolean todoOk = true;
-            if(id!=0){
-                Especialidad esp = te.getById(id);
-                if (esp!=null) {
-                    todoOk = te.baja(esp);
-                } else todoOk = false;                            
-            } else todoOk = false;
-            
-            if (todoOk){
-                jr.setResult("OK");
-            }
-            else {
-                jr.setResult("ERROR");
-                jr.setMessage("No se pudo eliminar la especialidad");                
-            }
-            out.println(new Gson().toJson(jr));
+            List<Obra_social> lista = new TObraSocial().getList();
+            if (lista != null) {
+                jr.setTotalRecordCount(lista.size());                  
+            } else {
+                jr.setTotalRecordCount(0);
+            }            
+            jr.setResult("OK");
+            jr.setRecords(lista);
+
+            Gson gson = new Gson();
+            String jsonResult = gson.toJson(jr);
+            //System.out.println(jsonResult);
+            out.print(jsonResult);
         } finally {            
             out.close();
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,7 +74,7 @@ public class EspecialidadDelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /**
@@ -92,32 +89,7 @@ public class EspecialidadDelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            String espec_id = request.getParameter("espec_id");
-            int id = Integer.parseInt(espec_id);
-            TEspecialidad te = new TEspecialidad();
-            JsonRespuesta jr = new JsonRespuesta();
-            boolean todoOk = true;
-            if(id!=0){
-                Especialidad esp = te.getById(id);
-                if (esp!=null) {
-                    todoOk = te.baja(esp);
-                } else todoOk = false;                            
-            } else todoOk = false;
-            
-            if (todoOk){
-                jr.setResult("OK");
-            }
-            else {
-                jr.setResult("ERROR");
-                jr.setMessage("No se pudo eliminar la especialidad");                
-            }
-            out.println(new Gson().toJson(jr));
-        } finally {            
-            out.close();
-        }
+        processRequest(request, response);
     }
 
     /**

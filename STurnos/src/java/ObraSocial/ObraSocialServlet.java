@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Especialidades;
+package ObraSocial;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +17,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="EspecialidadServlet",urlPatterns={PathCfg.ESPECIALIDADES_PATH})
-public class EspecialidadServlet extends HttpServlet {
+@WebServlet(name="ObraSocialServlet",urlPatterns={PathCfg.OBRASOCIAL_PATH})
+public class ObraSocialServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -33,11 +32,11 @@ public class EspecialidadServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("especialidades.jsp").forward(request, response);
+               request.getRequestDispatcher("obra_social.jsp").forward(request, response);
         return;
     }
 
-    
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
