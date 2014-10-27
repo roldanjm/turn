@@ -1,3 +1,9 @@
+<%@page import="transaccion.TEspecialidad"%>
+<%@page import="bd.Especialidad"%>
+<%@page import="bd.Profesional"%>
+<%@page import="transaccion.TProfesional"%>
+<%@page import="bd.Agenda"%>
+<%@page import="transaccion.TAgenda"%>
 <%@page import="bd.Turno"%>
 <%@page import="utilitarios.PathCfg"%>
 <%@page import="bd.Asignar"%>
@@ -9,6 +15,9 @@
     Asignar asignar = (Asignar) request.getAttribute("asignar");
     Turno turno = (Turno) request.getAttribute("turno");
     if(asignar == null) asignar = new Asignar();
+    Agenda agenda = new TAgenda().getById(turno.getAgenda_id());
+    Profesional prof = new TProfesional().getById(agenda.getProf_id());
+    Especialidad espe = new TEspecialidad().getById(prof.getEspe_id());
 %>
 <html>  
     <head>
@@ -28,11 +37,47 @@
                     <h1>Turno <small>/ Asignar </small></h1>
             </div>    
             <div class="row-fluid">
+                <div class="span8">
+                    <div class="head clearfix">
+                        <div class="isw-calendar"></div>
+                        <h1>Datos del turno</h1>
+                        <ul class="buttons">                                        
+                                <li class="toggle"><a href="#"></a></li>
+                        </ul> 
+                    </div>
+                    <div class="block scrollBox">
+                        <div class="scroll" style="">
+                            <div class="row-form clearfix">
+                                    <div class="span5">
+                                        <label for="agenda_prof">Profesional</label>
+                                        <input type="text" id="agenda_prof" disabled value="<%= prof.getProf_apellido() + ", " + prof.getProf_nombre() %>" />
+                                    </div>
+                                    <div class="span5">
+                                        <label for="espe_id">Especialidad</label>
+                                        <input type="text" id="espe_id" disabled value="<%= espe.getEspec_detalle() %>" />
+                                    </div>
+                            </div>
+                            <div class="row-form clearfix">
+                                <div class="span3">
+                                    <label for="turno_hinicio">Hora inicio: </label>
+                                    <input type="text" id="turno_hinicio" disabled value="<%=turno.getTurno_hinicio()%>">
+                                </div>
+                                <div class="span3">
+                                        <label for="turno_hfin">Hora fin: </label>
+                                        <input type="text" id="turno_hfin" disabled value="<%=turno.getTurno_hfin()%>"/>
+                                </div>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>                        
+            </div>
+            <div class="row-fluid">
                 
                 <div class="span12">
                     <div class="head clearfix">
                         <div class="isw-grid"></div>
-                        <h1>Asignar turno</h1>
+                        <h1>Asignar paciente</h1>
                     </div>
                     <div class="block-fluid">                        
                         <form action="<%=PathCfg.ASIGNAR_TURNO%>" method="POST">

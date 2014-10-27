@@ -1,7 +1,14 @@
+<%@page import="transaccion.TEspecialidad"%>
+<%@page import="bd.Especialidad"%>
+<%@page import="utils.TFecha"%>
+<%@page import="bd.Profesional"%>
+<%@page import="transaccion.TProfesional"%>
 <%@page import="bd.Agenda"%>
 <%@page import="utilitarios.PathCfg"%>
 <%
     Agenda agenda = (Agenda) request.getAttribute("agenda");    
+    Profesional prof = new TProfesional().getById(agenda.getProf_id());
+    Especialidad espe = new TEspecialidad().getById(prof.getEspe_id());
 %>
 <html>  
     <head>
@@ -23,7 +30,7 @@
             <div class="row-fluid">
                 <div class="span12">
 
-                    <div class="span8">
+                    <!--<div class="span8">-->
 <!--                        <div class="span12">
                             <div class="head clearfix">
                                 <div class="isw-grid"></div>
@@ -44,8 +51,49 @@
                             </div>
                         </div>-->
 
-                    </div>
+                    <!--</div>-->
+                    <div class="span8">
+                        <div class="head clearfix">
+                            <div class="isw-calendar"></div>
+                            <h1>Agenda</h1>
+                            <ul class="buttons">                                        
+                                <li class="toggle"><a href="#"></a></li>
+                            </ul> 
+                        </div>
+                        <div class="block users scrollBox">
 
+                            <div class="scroll" style="">
+
+                                <div class="row-form clearfix">
+                                    <div class="span5">
+                                        <label for="agenda_prof">Profesional</label>
+                                        <input type="text" id="agenda_prof" disabled value="<%= prof.getProf_apellido() + ", " + prof.getProf_nombre() %>" />
+                                    </div>
+                                    <div class="span5">
+                                        <label for="espe_id">Especialidad</label>
+                                        <input type="text" id="espe_id" disabled value="<%= espe.getEspec_detalle() %>" />
+                                    </div>
+                                </div>
+                                
+                                <div class="row-form clearfix">
+                                    <div class="span3">
+                                        <label for="agenda_prof">Dia:</label>
+                                        <input type="text" id="agenda_prof" disabled value="<%=TFecha.formatearFecha(agenda.getAgenda_dia(), "yyyy-MM-dd", "dd/MM/YYYY") %> " />
+                                    </div>
+                                
+                                    <div class="span3">
+                                    <label for="agenda_prof">Hora Inicio:</label>
+                                    <input type="text" id="agenda_prof" disabled value="<%=agenda.getAgenda_hinicio() %> " />
+                                    </div>
+                                    <div class="span3">
+                                        <label for="agenda_prof">Hora Fin:</label>
+                                        <input type="text" id="agenda_prof" disabled value="<%=agenda.getAgenda_hfin() %> " />
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="span4">
                         <div class="head clearfix">
                             <div class="isw-cloud"></div>

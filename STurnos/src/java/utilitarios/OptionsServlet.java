@@ -62,6 +62,8 @@ public class OptionsServlet extends HttpServlet {
             lstOpciones = getListTipoTurno();
         } if (type.equalsIgnoreCase("EstadoTurno")){
             lstOpciones = getListEstadoTurno();
+        }if (type.equalsIgnoreCase("TipoDoc")){
+            lstOpciones = getListTipoDoc();
         }else {
        
         }
@@ -136,6 +138,16 @@ public class OptionsServlet extends HttpServlet {
         
         return lstOpciones;
     }
+    
+    private List<Opcion> getListTipoDoc() {
+        List<Opcion> lstOpciones = new ArrayList();
+        lstOpciones.add(new Opcion(0,""));
+        lstOpciones.add(new Opcion(1,"DNI"));
+        lstOpciones.add(new Opcion(2,"CI"));
+        lstOpciones.add(new Opcion(3,"LE"));
+        lstOpciones.add(new Opcion(4,"CUIL"));      
+        return lstOpciones;        
+    }
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -175,6 +187,8 @@ public class OptionsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+  
 
     
     

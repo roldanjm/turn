@@ -88,7 +88,7 @@
         <script>
             var $prof_id = $('#prof_id');            
             $('#tablaAgenda').jtable({
-                title:'Administraci&oacute;n de agenda',
+                title:'Administraci&oacute;n de agendas',
                 actions:{
                     listAction:'<%= PathCfg.AGENDA_LIST %>',
                     deleteAction:'<%= PathCfg.AGENDA_DEL %>'

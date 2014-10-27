@@ -36,7 +36,13 @@ public class PathCfg {
     public static final String TURNOS_PATH = "/Turnos";
     public static final String TURNOS_LIST = "/TurnosList";
     public static final String TURNOS_EDIT = "/TurnosEdit";
-    public static final String TURNOS_DEL = "/TurnosDel";
+    public static final String TURNOS_DEL  = "/TurnosDel";
+    
     public static final String ASIGNAR_TURNO = "/AsignarTurno";
-        
+    
+    public static final String ObraSocial_PATH = "/ObraSocial";
+    public static final String ObraSocial_LIST = "/ObraSocialList";
+    public static final String ObraSocial_EDIT = "/ObraSocialEdit";
+    public static final String ObraSocial_DEL  = "/ObraSocialDel";
+    
 }

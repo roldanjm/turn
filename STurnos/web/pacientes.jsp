@@ -110,14 +110,16 @@
                         tipodoc_id:{
                             title: "Tipo Doc",
                             width:'5%',
+                            options:'<%=PathCfg.OPTIONS%>?type=TipoDoc' 
                         },
                         pac_nrodoc:{
-                            title:"Nro Doc",
+                            title:"Nro Documento",
                             width: '10%'
                         },
                         pac_sexo:{
                             title:"Sexo",
-                            width:'5%'
+                            width:'5%',
+                            options:{'0':'Sin definir','1':'Masculino','2':'Femenino'},
                         },
                        Editar: {
                             title: '',
