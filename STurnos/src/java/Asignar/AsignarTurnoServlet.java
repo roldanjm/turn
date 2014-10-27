@@ -1,33 +1,32 @@
+package Asignar;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Agenda;
 
-import bd.Agenda;
 import bd.Asignar;
+import bd.Paciente;
 import bd.Turno;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import transaccion.TAgenda;
 import transaccion.TAsignar;
+import transaccion.TPaciente;
 import transaccion.TTurno;
-import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
+import utils.TFecha;
 
 /**
  *
  * @author Diego
  */
-@WebServlet(name="AgendaDelServlet",urlPatterns={PathCfg.AGENDA_DEL})
-public class AgendaDelServlet extends HttpServlet {
+@WebServlet(name="AsignarTurnoServlet",urlPatterns={PathCfg.ASIGNAR_TURNO})
+public class AsignarTurnoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -39,27 +38,9 @@ public class AgendaDelServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AgendaDelServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AgendaDelServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
-        }
-    }
-
     
+
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -72,7 +53,20 @@ public class AgendaDelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Asignar asignar = null;
+        try{
+//            int asignar_id = Integer.parseInt(request.getParameter("asignar_id"));
+            int turno_id = Integer.parseInt(request.getParameter("turno_id"));
+//            asignar = new TAsignar().getById(asignar_id);            
+            Turno turno = new TTurno().getById(turno_id);
+            if (turno!=null){
+                request.setAttribute("turno", turno);
+            }
+        }catch(NumberFormatException ex){
+
+        }        
+//        if (asignar == null) asignar = new Asignar();
+        request.getRequestDispatcher("asignar_turno.jsp").forward(request, response);
     }
 
     /**
@@ -87,28 +81,29 @@ public class AgendaDelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gson gson = new Gson();
-        JsonRespuesta jr = new JsonRespuesta();
+           
         try{
-            Integer agenda_id = Integer.parseInt(request.getParameter("agenda_id"));
-            TAgenda tp = new TAgenda();
-            Agenda agenda = tp.getById(agenda_id);
-            boolean baja = false;
-            if (agenda != null){               
-                baja = tp.baja(agenda);
-                if (baja) {
-                    jr.setResult("OK");
-                }else{ jr.setResult("ERROR");}
-            } else{
-                jr.setResult("ERROR");
+//            int asignar_id = Integer.parseInt(request.getParameter("asignar_id"));
+            Asignar asignar = new Asignar();
+            int turno_id = Integer.parseInt(request.getParameter("turno_id"));
+            int pac_id = Integer.parseInt(request.getParameter("pac_id"));
+            TTurno tturno = new TTurno();
+            Turno turno = tturno.getById(turno_id);
+            Paciente paciente = new TPaciente().getById(pac_id);
+            if (turno!=null & paciente!=null) {
+                asignar.setTurno_id(turno_id);
+                asignar.setPac_id(pac_id);
+                asignar.setAsignar_fecha(TFecha.ahora());
+                int asignar_id = new TAsignar().alta(asignar);
+                if(asignar_id != 0){
+                    turno.setTurno_estado(1);
+                    tturno.actualizar(turno);
+                    response.sendRedirect(PathCfg.TURNOS_PATH+"?agenda_id=" + turno.getAgenda_id());                
+                }
             }
         }catch(NumberFormatException ex){
-            jr.setResult("ERROR");
+            
         }
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println(gson.toJson(jr));
-        out.close();
     }
 
     /**

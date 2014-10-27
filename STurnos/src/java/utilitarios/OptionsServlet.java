@@ -7,6 +7,7 @@ package utilitarios;
 import bd.Bd_localidad;
 import bd.Especialidad;
 import bd.Profesional;
+import bd.TipoTurno;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import transaccion.TEspecialidad;
 import transaccion.TLocalidad;
 import transaccion.TProfesional;
+import transaccion.TTipoTurno;
 
 /**
  *
@@ -56,9 +58,11 @@ public class OptionsServlet extends HttpServlet {
                         
         } if (type.equalsIgnoreCase("Profesionales")){
             lstOpciones = getListProgesionales();
-                       
-                        
-        } else {
+        } if (type.equalsIgnoreCase("TipoTurno")){
+            lstOpciones = getListTipoTurno();
+        } if (type.equalsIgnoreCase("EstadoTurno")){
+            lstOpciones = getListEstadoTurno();
+        }else {
        
         }
                 
@@ -76,7 +80,7 @@ public class OptionsServlet extends HttpServlet {
         }
     }
 
-    public List<Opcion> getListEspecialidades(){
+    private List<Opcion> getListEspecialidades(){
         List<Opcion> lstOpciones = null;
         List<Especialidad> list = new TEspecialidad().getList();
             
@@ -88,7 +92,7 @@ public class OptionsServlet extends HttpServlet {
         } 
         return lstOpciones;
     }
-    public List<Opcion> getListLocalidades(Integer prov_id){
+    private List<Opcion> getListLocalidades(Integer prov_id){
         List<Opcion> lstOpciones = null;
         List<Bd_localidad> list = new TLocalidad().getList(prov_id);
         
@@ -100,7 +104,7 @@ public class OptionsServlet extends HttpServlet {
         }        
         return lstOpciones;
     }
-    public List<Opcion> getListProgesionales(){
+    private List<Opcion> getListProgesionales(){
         List<Opcion> lstOpciones = null;
         List<Profesional> list = new TProfesional().getList();                
             if (list!=null){
@@ -109,6 +113,27 @@ public class OptionsServlet extends HttpServlet {
                     lstOpciones.add(new Opcion(prof.getProf_id(),prof.getProf_apellido() + ", " + prof.getProf_nombre()));
                 }                  
             }            
+        return lstOpciones;
+    }
+    private List<Opcion> getListTipoTurno() {
+        List<Opcion> lstOpciones = null;
+        List<TipoTurno> list = new TTipoTurno().getList();        
+        if (list!=null){
+            lstOpciones = new ArrayList();
+            for (TipoTurno turno:list){
+                lstOpciones.add(new Opcion(turno.getTturno_id(),turno.getTturno_descripcion()));
+            }                  
+        }            
+        return lstOpciones;
+    }
+    private List<Opcion> getListEstadoTurno(){
+        List<Opcion> lstOpciones = new ArrayList();
+        lstOpciones.add(new Opcion(0,"Creado"));
+        lstOpciones.add(new Opcion(1,"Asignado"));
+        lstOpciones.add(new Opcion(2,"En espera"));
+        lstOpciones.add(new Opcion(3,"Finalizado"));
+        lstOpciones.add(new Opcion(4,"No disponible"));        
+        
         return lstOpciones;
     }
     /**
@@ -150,6 +175,8 @@ public class OptionsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
     
     private class Opcion{
         private Opcion(int id,String disp){

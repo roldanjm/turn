@@ -4,6 +4,7 @@
  */
 package transaccion;
 
+import bd.Agenda;
 import bd.Profesional;
 import java.util.List;
 
@@ -24,5 +25,18 @@ public class TProfesional extends TransaccionBase<Profesional>{
 
     public boolean actualizar(Profesional prof) {
         return this.actualizar(prof,"prof_id");
+    }
+    
+    public boolean baja(Profesional prof){
+        if (prof == null) return false;
+        TAgenda tagenda = new TAgenda();
+        List<Agenda> lstAgendas = tagenda.getByProfesional(prof.getProf_id());
+        
+        if (lstAgendas!=null){ //Eliminamos todas las agendas asociadas al profesional
+            for(Agenda agenda:lstAgendas){
+                tagenda.baja(agenda);
+            }
+        }
+        return super.baja(prof);
     }
 }

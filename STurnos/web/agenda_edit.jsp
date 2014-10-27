@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="utilitarios.PathCfg"%>
 <%@page import="bd.Agenda"%>
 <%@page import="bd.Profesional"%>
@@ -9,6 +10,7 @@
     if (agenda==null) {
         agenda = new Agenda();
     }
+    int[] lstIntervalos = {10,15,30,45,60};
 %>
 <html>  
     <head>
@@ -59,6 +61,16 @@
                             <div class="span2"><label for="agenda_dia">Dia:</label><input type="text" name="agenda_dia" id="agenda_dia" value="<%= agenda.getAgenda_dia()%>"/></div>
                             <div class="span2"><label for="agenda_hinicio">Hora inicio:</label><input type="text" name="agenda_hinicio" id="agenda_hinicio" value="<%= agenda.getAgenda_hinicio()%>"/></div>
                             <div class="span2"><label for="agenda_hfin">Hora fin:</label><input name="agenda_hfin" id="agenda_hfin" type="text" value="<%=agenda.getAgenda_hfin()%>"/></div>                            
+                            <div class="span2"><label for="agenda_intervalo">Intervalo:</label>
+                                <select name="agenda_intervalo" id="agenda_intervalo" value="<%=agenda.getAgenda_hfin()%>"/>                                
+                                    <% for (int i=0;i<lstIntervalos.length;i++) {%>
+                                        <option value="<%=lstIntervalos[i]%>">
+                                            <%=lstIntervalos[i]%>
+                                        </option>
+                                        <% }%>
+                                </select>
+                                
+                            </div>
                         </div>                                                                             
 
                         <div class="row-form clearfix">

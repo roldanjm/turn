@@ -188,6 +188,9 @@ public class TransaccionRS {
                                 valor = rs.getFloat(i);
                                 tipobd = "java.lang.Float";
                                 break;
+                            default:
+                                valor = "";
+                                tipobd = "" + tipo;
                         }
 
                         Class[] clasesParamSetEmail = new Class[1];
@@ -225,7 +228,7 @@ public class TransaccionRS {
             Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } catch (ClassNotFoundException ex) {
-            System.out.println("No se pudo recuperar el metodo " + tipobd);
+            System.out.println("No se pudo recuperar el metodo " + tipobd + " / " + clase);
             Logger.getLogger(TransaccionRS.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } catch (SQLException ex) {

@@ -5,8 +5,10 @@
 package Agenda;
 
 import bd.Agenda;
+import bd.Turno;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TAgenda;
+import transaccion.TTurno;
 import utilitarios.PathCfg;
+import utils.TFecha;
 
 /**
  *
@@ -65,19 +69,32 @@ public class AgendaEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
- boolean todoOk = false;
+        boolean todoOk = false;
         Agenda agenda = new TAgenda().recuperarInstancia(request.getParameterMap());
+        agenda.setAgenda_alta(TFecha.ahora());
         Integer id = 0;
+        int agenda_intervalo = 15;
         if(agenda!=null){            
             try{
                 id = Integer.parseInt(request.getParameter("agenda_id"));
+                agenda_intervalo = Integer.parseInt(request.getParameter("agenda_intervalo"));
             }catch(NumberFormatException ex){
                 id = 0;
             }
             if ( id > 0){
                 todoOk = new TAgenda().actualizar(agenda, "agenda_id");
-            } else {                
-               todoOk = new TAgenda().alta(agenda) != 0;
+            } else {    
+               id = new TAgenda().alta(agenda);    
+               todoOk = id !=0;
+               if (todoOk) {
+                   agenda.setAgenda_id(id);
+                    List<Turno> listaTurnos = new TAgenda().getListaTurnos(agenda, agenda_intervalo);
+                    TTurno tTurno = new TTurno();
+                    
+                    for(Turno turno:listaTurnos){
+                         tTurno.alta(turno);                         
+                    }
+               }
             }
         }
         if(todoOk){

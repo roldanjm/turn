@@ -119,9 +119,23 @@
                         list:false,
                         edit:false,
                     },
+                    Administrar:{
+                        title: '',
+                            width: '1%',
+                            sorting: false,
+                            edit: false,
+                            create: false,
+                            display: function(data) {
+                                var $img2 = $('<button class="btn btn-small">Administrar</button>');
+                                $img2.click(function() {
+                                    window.location = "<%=PathCfg.TURNOS_PATH%>" + '?agenda_id=' + data.record.agenda_id 
+                                });
+                                return $img2
+                           }
+                    },
                     Editar: {
                             title: '',
-                            width: '2%',
+                            width: '1%',
                             sorting: false,
                             edit: false,
                             create: false,

@@ -32,5 +32,11 @@ public class PathCfg {
     public static final String AGENDA_EDIT = "/AgendaEdit";
     public static final String AGENDA_DEL  = "/AgendaDel";
     
+    
+    public static final String TURNOS_PATH = "/Turnos";
+    public static final String TURNOS_LIST = "/TurnosList";
+    public static final String TURNOS_EDIT = "/TurnosEdit";
+    public static final String TURNOS_DEL = "/TurnosDel";
+    public static final String ASIGNAR_TURNO = "/AsignarTurno";
         
 }

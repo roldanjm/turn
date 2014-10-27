@@ -2,18 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Profesional;
+package Turnos;
 
-import bd.Profesional;
+import bd.Turno;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import transaccion.TProfesional;
+import transaccion.TTurno;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -21,8 +22,8 @@ import utilitarios.PathCfg;
  *
  * @author Diego
  */
-@WebServlet(name="ProfesionalesDelServlet",urlPatterns={PathCfg.PROFESIONALES_DEL})
-public class ProfesionalesDelServlet extends HttpServlet {
+@WebServlet(name="TurnosListServlet",urlPatterns={PathCfg.TURNOS_LIST})
+public class TurnosListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -36,25 +37,30 @@ public class ProfesionalesDelServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProfesionalDelServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProfesionalDelServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            JsonRespuesta jr = new JsonRespuesta();           
+            Integer agenda_id = Integer.parseInt(request.getParameter("agenda_id"));
+            List<Turno> lista = new TTurno().getListAgenda(agenda_id);
+            if (lista != null) {
+                jr.setTotalRecordCount(lista.size());                  
+            } else {
+                jr.setTotalRecordCount(0);
+            }            
+            jr.setResult("OK");
+            jr.setRecords(lista);
+            
+            String jsonResult = new Gson().toJson(jr);
+            System.out.println(jsonResult);
+            out.print(jsonResult);
         } finally {            
             out.close();
         }
     }
 
-    
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -82,30 +88,7 @@ public class ProfesionalesDelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gson gson = new Gson();
-        JsonRespuesta jr = new JsonRespuesta();
-        try{
-            Integer prof_id = Integer.parseInt(request.getParameter("prof_id"));
-            TProfesional tp = new TProfesional();
-            Profesional profesional = tp.getById(prof_id);
-            boolean baja = false;
-            if (profesional != null){
-                baja = tp.baja(profesional);
-                if (baja) {
-                    jr.setResult("OK");
-                }else{ jr.setResult("ERROR");}
-            } else{
-                jr.setResult("ERROR");
-            }
-            
-            
-        }catch(NumberFormatException ex){
-            jr.setResult("ERROR");
-        }
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println(gson.toJson(jr));
-        out.close();
+        processRequest(request, response);
     }
 
     /**

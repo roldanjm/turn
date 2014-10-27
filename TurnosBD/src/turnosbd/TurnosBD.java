@@ -5,20 +5,31 @@
 package turnosbd;
 
 import bd.Agenda;
+import bd.Asignar;
 import bd.Empleado;
 import bd.Especialidad;
 import bd.Obra_social;
 import bd.Paciente;
+import bd.Profesional;
 import bd.Rol;
+import bd.Turno;
 import bd.Usuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import transaccion.TAgenda;
+import transaccion.TAsignar;
 import transaccion.TEmpleado;
 import transaccion.TEspecialidad;
 import transaccion.TObraSocial;
 import transaccion.TPaciente;
+import transaccion.TProfesional;
 import transaccion.TRol;
+import transaccion.TTurno;
 import transaccion.TUsuario;
 import utils.TFecha;
 
@@ -32,12 +43,40 @@ public class TurnosBD {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        List<Agenda> list = new TAgenda().getListByProf(0);
-        for (Iterator<Agenda> it = list.iterator(); it.hasNext();) {
-            Agenda agenda = it.next();
-            System.out.println(agenda.getProf_id());        
-        }
-
+        Profesional prof = new TProfesional().getById(1);
+        List<Agenda> byProfesional = new TAgenda().getByProfesional(prof.getProf_id());
+        boolean baja = new TProfesional().baja(prof);
+        System.out.println(baja);
+        //        Agenda agenda = new Agenda();
+        //        agenda.setProf_id(2);
+        //        agenda.setAgenda_hinicio("08:00:00");
+        //        agenda.setAgenda_hfin("12:00:00");
+        //        Agenda agenda = new TAgenda().getById(1);
+        //        List<Turno> listaTurnos = new TAgenda().getListaTurnos(agenda, 45);
+        //        for(Turno turno:listaTurnos){
+        //            new TTurno().alta(turno);
+        //            System.out.println(turno.getTurno_hinicio() + " - " + turno.getTurno_hfin() );
+        //        }
+        //        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        //        try {
+        //            long hinicio = sdf.parse(agenda.getAgenda_hinicio()).getTime();
+        //            long hfin   = sdf.parse(agenda.getAgenda_hfin()).getTime();
+        //            long minutos = 13;
+        //            long time = hinicio;
+        //
+        //            System.out.println("Inicio: " + TFecha.formatearHora(hinicio));
+        //            System.out.println("Fin: " + TFecha.formatearHora(hfin));
+        //
+        //            while(time < hfin){
+        //                System.out.println(TFecha.formatearHora(time));
+        //                time += minutos * 1000 * 60;
+        //            }
+        //
+        //        List<Agenda> list = new TAgenda().getListByProf(0);
+        //        for (Iterator<Agenda> it = list.iterator(); it.hasNext();) {
+        //            Agenda agenda = it.next();
+        //            System.out.println(agenda.getProf_id());
+        //        }
         // TODO code application logic here
         /* ALTA DE ROLES */
         /* new TRol().alta(new Rol().setRol_descripcion("Rol 1"));
@@ -70,7 +109,7 @@ public class TurnosBD {
         .setPac_fechaalta(TFecha.ahora())
         .setPac_fnacimiento("1984-05-31")
         .setPac_mail("giuliani.diego@gmail.com")
-        .setPac_nrodoc("30917257");        
+        .setPac_nrodoc("30917257");
         new TPaciente().alta(p);
          */
         /* LISTA PACIENTE */
@@ -129,7 +168,10 @@ public class TurnosBD {
         //                .setEmp_nrodoc("00666333")
         //                .setUsu_id(user.getUsu_id());
         //        new TEmpleado().alta(emp);
-        
+        //        } catch (ParseException ex) {
+        //            Logger.getLogger(TurnosBD.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+        //        
         
         
     }

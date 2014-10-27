@@ -141,4 +141,27 @@ public class TFecha {
         //Regresa la edad en base a la fecha de nacimiento
         return año;
     }
+    
+    public static long sumarMinutos(String hora,int minutos){                
+        try {
+            Date date = new SimpleDateFormat("HH:mm").parse(hora);
+            long time = date.getTime();
+            time += minutos * 1000 * 60;
+            return time;
+        } catch (ParseException ex) {
+            Logger.getLogger(TFecha.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }    
+    }
+    public static long convertirMS(String hora){
+        try {
+            return new SimpleDateFormat("HH:mm:ss").parse(hora).getTime();
+        } catch (ParseException ex) {
+            Logger.getLogger(TFecha.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+    public static String formatearHora(long time){
+        return new SimpleDateFormat("HH:mm:ss").format(time);
+    }
 }

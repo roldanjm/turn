@@ -21,7 +21,7 @@ public class TransaccionBase<E> {
     Class<E> clase;
 
     public TransaccionBase() {
-        //this.clase = clase;
+        this.clase = clase;
         this.clase = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         conexion = new Conexion();
     }
