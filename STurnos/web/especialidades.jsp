@@ -52,17 +52,7 @@
                                 <li class="toggle"><a href="#"></a></li>
                             </ul> 
                         </div>
-                        <div class="block users scrollBox">
-
-                            <div class="scroll" style="">
-
-                                <div class="item clearfix">
-                                    <p>                                                      
-                                        <button type="button" class="btn btn-large span12">Nueva Especialidad</button>                                        
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                     </div>
                 </div>
@@ -100,6 +90,7 @@
                 },
                 espec_detalle: {
                     title: 'Especialidad',
+                    type: 'textarea'
                 },
             }
         });
