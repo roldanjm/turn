@@ -81,6 +81,7 @@ public class PacienteEditServlet extends HttpServlet {
             }catch(NumberFormatException ex){
                 pac_id = 0;
             }
+            paciente.setPac_fnacimiento(TFecha.formatearFecha(request.getParameter("pac_fnacimiento"), TFecha.formatoVista, TFecha.formatoBD));
             if ( pac_id > 0){
                 todoOk = new TPaciente().actualizar(paciente, "pac_id");
             } else {

@@ -8,7 +8,10 @@ import bd.Agenda;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import transaccion.TAgenda;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
+import utils.TFecha;
 
 /**
  *
@@ -44,11 +48,13 @@ public class AgendaListServlet extends HttpServlet {
         try {
             JsonRespuesta jr = new JsonRespuesta();
             int  prof_id = 0;
+            String agenda_dia = "";
             try{
                 prof_id = Integer.parseInt(request.getParameter("prof_id"));
+                agenda_dia = TFecha.formatearFecha(request.getParameter("agenda_dia"),TFecha.formatoVista,TFecha.formatoVista);
             } catch(NumberFormatException ex){ }
             
-            List<Agenda> lista = new TAgenda().getListByProf(prof_id);
+            List<Agenda> lista = new TAgenda().getList(procesarParametros(request));//getListByProf(prof_id);
             if (lista != null) {
                 jr.setTotalRecordCount(lista.size());                  
             } else {
@@ -63,6 +69,21 @@ public class AgendaListServlet extends HttpServlet {
         } finally {            
             out.close();
         } 
+ }
+ private HashMap<String,String> procesarParametros(HttpServletRequest request){
+     HashMap<String,String> filtro = new HashMap<String,String>();
+//     String key = "";
+//     for(Enumeration<String> names = request.getParameterNames();names.hasMoreElements();key = names.nextElement()){
+//        filtro.put(key, request.getParameter(key));
+//        System.out.println(key + " -> " + request.getParameter(key) );
+//    }
+    if(request.getParameter("prof_id")!=null){    
+        filtro.put("prof_id", request.getParameter("prof_id"));
+    }
+    if(request.getParameter("agenda_dia")!=null){     
+        filtro.put("agenda_dia",TFecha.formatearFecha(request.getParameter("agenda_dia"),TFecha.formatoVista,TFecha.formatoBD));
+    }
+     return filtro;
  }
     
     /**

@@ -41,7 +41,8 @@
 <script type='text/javascript' src='js/cookies.js'></script>
 <script type='text/javascript' src='js/actions.js'></script>
 <!--<script type='text/javascript' src='js/plugins.js'></script>-->
-
+<script type='text/javascript' src='js/date.js'></script>
+<script type='text/javascript' src='js/datepicker.regional.es.js'></script>
 <script type='text/javascript' src='js/plugins/jtable/jquery.jtable.min.js'></script>
 <script type="text/javascript" src="js/plugins/jtable/localization/jquery.jtable.es.js"></script>
 

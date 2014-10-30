@@ -1,3 +1,4 @@
+<%@page import="utils.TFecha"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="utilitarios.PathCfg"%>
 <%@page import="bd.Agenda"%>
@@ -6,10 +7,7 @@
 <%@page import="transaccion.TProfesional"%>
 <%
     List<Profesional> lstProfesional = new TProfesional().getList();
-    Agenda agenda = (Agenda) request.getAttribute("agenda");
-    if (agenda==null) {
-        agenda = new Agenda();
-    }
+    Agenda agenda = (Agenda) request.getAttribute("agenda");    
     int[] lstIntervalos = {10,15,30,45,60};
 %>
 <html>  
@@ -27,7 +25,7 @@
         
         <div class="workplace">
             <div class="page-header">
-                    <h1>Agenda <small>/ Nueva </small></h1>
+                    <h1>Agenda <small>/ Editar </small></h1>
             </div>    
             <div class="row-fluid">
                 
@@ -58,13 +56,17 @@
                         </div>                                                               
                         
                         <div class="row-form clearfix">
-                            <div class="span2"><label for="agenda_dia">Dia:</label><input type="text" name="agenda_dia" id="agenda_dia" value="<%= agenda.getAgenda_dia()%>"/></div>
+                            <div class="span2"><label for="agenda_dia">Dia:</label><input type="text" name="agenda_dia" id="agenda_dia" value="<%= TFecha.formatearFecha(agenda.getAgenda_dia(), TFecha.formatoBD, TFecha.formatoVista) %>"/></div>
                             <div class="span2"><label for="agenda_hinicio">Hora inicio:</label><input type="text" name="agenda_hinicio" id="agenda_hinicio" value="<%= agenda.getAgenda_hinicio()%>"/></div>
                             <div class="span2"><label for="agenda_hfin">Hora fin:</label><input name="agenda_hfin" id="agenda_hfin" type="text" value="<%=agenda.getAgenda_hfin()%>"/></div>                            
                             <div class="span2"><label for="agenda_intervalo">Intervalo:</label>
                                 <select name="agenda_intervalo" id="agenda_intervalo" value="<%=agenda.getAgenda_hfin()%>"/>                                
                                     <% for (int i=0;i<lstIntervalos.length;i++) {%>
-                                        <option value="<%=lstIntervalos[i]%>">
+                                        <option value="<%=lstIntervalos[i]%>"
+                                                <% if(lstIntervalos[i] == agenda.getAgenda_intervalo()){ %>
+                                                selected
+                                                <%}%>
+                                                >
                                             <%=lstIntervalos[i]%>
                                         </option>
                                         <% }%>
@@ -94,6 +96,10 @@
             <div class="dr"><span></span></div>
             
         </div>
-
+<script>
+    $(document).ready(function(){
+        $('#agenda_dia').datepicker();        
+    });
+</script>
 </body>
 </html>

@@ -8,7 +8,9 @@ import bd.Agenda;
 import bd.Asignar;
 import bd.Turno;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import utils.TFecha;
 
 /**
@@ -36,17 +38,14 @@ public class TAgenda extends TransaccionBase<Agenda>{
     public boolean actualizar(Agenda agenda){
         return super.actualizar(agenda, "agenda_id");
     }
-      public List<Turno> getListaTurnos(Agenda agenda, long intervalo){      
+      public List<Turno> getListaTurnos(Agenda agenda){
         List<Turno> lstTurnos = new ArrayList<Turno>();
         long hinicio = TFecha.convertirMS(agenda.getAgenda_hinicio());
         long hfin    = TFecha.convertirMS(agenda.getAgenda_hfin());
         long time = hinicio;
+        int intervalo = agenda.getAgenda_intervalo();        
 
-        System.out.println("Inicio: " + TFecha.formatearHora(hinicio));
-        System.out.println("Fin: " + TFecha.formatearHora(hfin));
-
-        while(time < hfin){
-            System.out.println(TFecha.formatearHora(time));
+        while(time < hfin){            
             Turno turno  = new Turno();
             turno.setAgenda_id(agenda.getAgenda_id());
             turno.setTurno_hinicio(TFecha.formatearHora(time));
@@ -76,6 +75,17 @@ public class TAgenda extends TransaccionBase<Agenda>{
 
     public List<Agenda> getByProfesional(Integer prof_id) {
         String query = String.format("select * from agenda where agenda.prof_id = %d",prof_id);
+        return super.getList(query);
+    }
+    public List<Agenda> getList(Map<String,String> filtro){
+        
+        String where = "where True";
+        
+        if (filtro.containsKey("prof_id"))    where += String.format(" and prof_id = %s" , filtro.get("prof_id")) ;
+        if (filtro.containsKey("agenda_dia")) where += String.format(" and agenda_dia = '%s'" , filtro.get("agenda_dia"));
+        
+        String query = "select * from agenda " + where ;
+        System.out.println(query);
         return super.getList(query);
     }
 }

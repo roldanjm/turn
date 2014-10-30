@@ -1,3 +1,4 @@
+<%@page import="utils.TFecha"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="bd.Paciente"%>
 <%@page import="utilitarios.PathCfg"%>
@@ -66,7 +67,7 @@
                                 </select>
                             </div>  
                         
-                            <div class="span2"><label for="pac_fnacimiento">Fecha Nacimiento:</label><input type="text" name="pac_fnacimiento" id="pac_fnacimiento" value="<%= paciente.getPac_fnacimiento()%>" /></div>
+                                    <div class="span2"><label for="pac_fnacimiento">Fecha Nacimiento:</label><input type="text" name="pac_fnacimiento" id="pac_fnacimiento" value="<%= TFecha.formatearFecha(paciente.getPac_fnacimiento(),TFecha.formatoBD, TFecha.formatoVista)%>" /></div>
                             <div class="span1"><label for=tipodoc_id">Tipo Doc.</label>
                                     <select name="tipodoc_id" id="pac_nrodoc" value="" >
                                         <option>  </option>                                                                  
@@ -173,6 +174,7 @@
                 if($('#prov_id').val() != 0){
                     cargarLocalidades($('#prov_id').val(),<%= paciente.getLoc_id()%>);
                 }
+                $('#pac_fnacimiento').datepicker();
             });
             
             function cargarLocalidades(prov_id,loc_default){

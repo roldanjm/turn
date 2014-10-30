@@ -1,3 +1,4 @@
+<%@page import="utils.TFecha"%>
 <%@page import="bd.Profesional"%>
 <%@page import="transaccion.TProfesional"%>
 <%@page import="java.util.List"%>
@@ -46,11 +47,14 @@
                                         <% }%>
                                     </select>                                    
                                     </div>
-                                    <div class="span4"><label name="agenda_dia">Dia:</label><input type="text" name="agenda_dia" id="agenda_dia" value="span4"/></div>
-                                    
+                                    <div class="span4">
+                                            <label name="agenda_dia">Dia:</label><input type="text" name="agenda_dia" id="agenda_dia" value="<%=TFecha.ahora(TFecha.formatoVista)%>"/>
+                                    </div>
+                                    <div class="span4">
+                                        <button type="button" id="buscar" class="btn btn-large span12">Buscar Agendas</button>                                                
+                                    </div>
+                                        
                                 </div>                                                               
-
-                                                                                                                     
                             </div>
                         </div>
 
@@ -64,11 +68,11 @@
                                 <li class="toggle"><a href="#"></a></li>
                             </ul> 
                         </div>
-                        <div class="block users scrollBox">
+                        <div class="block scrollBox">
                             <div class="scroll" style="">
                                 <div class="item clearfix">
                                     <p>                                                      
-                                        <button type="button" class="btn btn-large span12" onclick="location.href = '<%= PathCfg.AGENDA_EDIT%>'">Nueva Agenda</button>                                        
+                                        <button type="button" class="btn btn-large span12" onclick="location.href = '<%= PathCfg.AGENDA_CREA %>'">Nueva Agenda</button>                                        
                                     </p>
                                 </div>
                             </div>
@@ -104,6 +108,9 @@
                     },
                     agenda_dia:{
                         title:'Dia',
+                        display:function(data){
+                            return formatDate(new Date(getDateFromFormat(data.record.agenda_dia,"<%= TFecha.formatoBD %>")),"<%= TFecha.formatoVista%>")
+                        },
                     },
                     agenda_consultorio:{
                         title:'Consultorio',
@@ -150,14 +157,21 @@
 
                 },
             });
-            $prof_id.change(function(){                
+            /* 
+            * $prof_id.change(function(){                
                 loadTabla($(this).val());
             });
+            */
             $(document).ready(function(){
-                loadTabla($('#prof_id').val());
+                //loadTabla($('#prof_id').val());
+                $('#buscar').click(function(){
+                    loadTabla($('#prof_id').val(),$('#agenda_dia').val());
+                });
+                $('#agenda_dia').datepicker();
             });
-            function loadTabla(id){                
-                $('#tablaAgenda').jtable('load',{prof_id:id});
+            function loadTabla(id,dia){
+                $('#tablaAgenda').jtable('load',{prof_id:id,agenda_dia:dia});
+                
             }
                 
         </script>

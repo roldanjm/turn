@@ -24,7 +24,7 @@ import utils.TFecha;
  *
  * @author Diego
  */
-@WebServlet(name="AgendaEditServlet",urlPatterns={PathCfg.AGENDA_EDIT})
+@WebServlet(name="AgendaEditSrv",urlPatterns={PathCfg.AGENDA_EDIT})
 public class AgendaEditServlet extends HttpServlet {
 
     /**
@@ -40,22 +40,21 @@ public class AgendaEditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        int agenda_id = 0;
+        int agenda_id;
         Agenda agenda = null;
         try{
             agenda_id = Integer.parseInt(request.getParameter("agenda_id"));
             agenda = new TAgenda().getById(agenda_id);
-            System.out.println(agenda);
-           
-        }catch(NumberFormatException ex){
-            
-        } 
-        if (agenda == null){ 
-                agenda = new Agenda();
+        }catch(NumberFormatException ex){ } 
+        if (agenda == null){             
+            response.sendRedirect(PathCfg.AGENDA_PATH);
+            return;
+        }else {
+            request.setAttribute("agenda", agenda);
+            request.getRequestDispatcher("agenda_edit.jsp").forward(request, response);
         }
-        request.setAttribute("agenda", agenda);
-        request.getRequestDispatcher("agenda_edit.jsp").forward(request, response);
-    }
+        }
+    
 
     /**
      * Handles the HTTP
@@ -71,32 +70,43 @@ public class AgendaEditServlet extends HttpServlet {
             throws ServletException, IOException {
         boolean todoOk = false;
         Agenda agenda = new TAgenda().recuperarInstancia(request.getParameterMap());
-        agenda.setAgenda_alta(TFecha.ahora());
+        agenda.setAgenda_alta(TFecha.ahora());     
+        agenda.setAgenda_dia(TFecha.formatearFecha(request.getParameter("agenda_dia"), TFecha.formatoVista, TFecha.formatoBD));
+        TAgenda ta = new TAgenda();
         Integer id = 0;
         int agenda_intervalo = 15;
-        if(agenda!=null){            
-            try{
-                id = Integer.parseInt(request.getParameter("agenda_id"));
-                agenda_intervalo = Integer.parseInt(request.getParameter("agenda_intervalo"));
-            }catch(NumberFormatException ex){
-                id = 0;
-            }
-            if ( id > 0){
-                todoOk = new TAgenda().actualizar(agenda, "agenda_id");
-            } else {    
-               id = new TAgenda().alta(agenda);    
-               todoOk = id !=0;
-               if (todoOk) {
-                   agenda.setAgenda_id(id);
-                    List<Turno> listaTurnos = new TAgenda().getListaTurnos(agenda, agenda_intervalo);
-                    TTurno tTurno = new TTurno();
-                    
-                    for(Turno turno:listaTurnos){
-                         tTurno.alta(turno);                         
-                    }
-               }
-            }
-        }
+        
+        try{
+            id = Integer.parseInt(request.getParameter("agenda_id"));
+            agenda_intervalo = Integer.parseInt(request.getParameter("agenda_intervalo"));
+        }catch(NumberFormatException ex){ }
+
+        if ( id > 0){
+            List<Turno> lstTurnos = new TTurno().getListAgenda(id); // Recupero la lista de turnos de la agenda
+            boolean puedeActualizar  = true;
+
+            if (lstTurnos==null){ puedeActualizar = true;}
+            else {
+                for(Turno turno:lstTurnos){ //Chequeo que no haya ningún turno asignado
+                    if(turno.getTurno_estado()!=0) puedeActualizar = false;
+                }
+            }   
+            if(puedeActualizar){                    
+                for(Turno turno:lstTurnos){
+                    // Borramos los turnos
+                    new TTurno().baja(turno);
+                }
+                todoOk = ta.actualizar(agenda, "agenda_id");
+                //Creamos los nuevos turnos
+                List<Turno> listaTurnos = ta.getListaTurnos(agenda);
+                TTurno tTurno = new TTurno();
+
+                for(Turno turno:listaTurnos){
+                     tTurno.alta(turno);                         
+                }
+
+            }else{} 
+        } 
         if(todoOk){
             response.sendRedirect(PathCfg.AGENDA_PATH);
             return;

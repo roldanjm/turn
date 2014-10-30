@@ -1,3 +1,4 @@
+<%@page import="utils.TFecha"%>
 <%@page import="utilitarios.PathCfg"%>
 <html>  
     <head>
@@ -105,7 +106,11 @@
                         pac_fnacimiento:{
                             title:'Fecha Nac.',
                             width:'7%',
-                            type:'date'
+                            type:'date',
+                            display: function(data){
+                                return formatDate(new Date(getDateFromFormat(data.record.pac_fnacimiento,"<%= TFecha.formatoBD %>")),"<%= TFecha.formatoVista%>")
+                                //convertirFecha(data.record.pac_fnacimiento,"yyyy-mm-dd");
+                            },
                         },                                                    
                         tipodoc_id:{
                             title: "Tipo Doc",
@@ -181,7 +186,10 @@
                         }, */                                                  
                     } 
                 });
-
+        function convertirFecha(fecha,formato){
+            var arr = fecha.split("-");
+            return arr[2] + "/" + arr[1] + "/" + arr[0];
+        }
         jQuery(document).ready(function() {                     
           $('#tablaPacientesList').jtable('load');
         });
