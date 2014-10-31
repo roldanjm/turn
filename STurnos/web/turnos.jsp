@@ -78,7 +78,7 @@
                                 <div class="row-form clearfix">
                                     <div class="span3">
                                         <label for="agenda_prof">Dia:</label>
-                                        <input type="text" id="agenda_prof" disabled value="<%=TFecha.formatearFecha(agenda.getAgenda_dia(), "yyyy-MM-dd", "dd/MM/YYYY") %> " />
+                                        <input type="text" id="agenda_prof" disabled value="<%= TFecha.formatearFecha(agenda.getAgenda_dia(), TFecha.formatoBD, TFecha.formatoVista) %> " />
                                     </div>
                                 
                                     <div class="span3">

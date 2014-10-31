@@ -16,7 +16,10 @@ import bd.Turno;
 import bd.Usuario;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,10 +46,24 @@ public class TurnosBD {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Profesional prof = new TProfesional().getById(1);
-        List<Agenda> byProfesional = new TAgenda().getByProfesional(prof.getProf_id());
-        boolean baja = new TProfesional().baja(prof);
-        System.out.println(baja);
+           
+       
+        ArrayList<Integer> dias = new ArrayList();        
+        dias.add(Calendar.MONDAY);
+        dias.add(Calendar.WEDNESDAY);
+        dias.add(Calendar.FRIDAY);
+        //List<Date> listaDias = TFecha.getListaDias("2014-10-26", "2014-10-31", dias);
+        
+//        for(Date dia: listaDias){
+//            System.out.println(TFecha.formatearFecha(dia,TFecha.formatoVista));
+//        }
+                Profesional prof = new TProfesional().getById(3);
+                List<Agenda> byProfesional = new TAgenda().getByProfesional(9);
+                for(Agenda agenda:byProfesional){
+                    System.out.println(TFecha.formatearFecha(agenda.getAgenda_dia(),TFecha.formatoBD,"EEEE"));
+                }
+        //        boolean baja = new TProfesional().baja(prof);
+        //        System.out.println(baja);
         //        Agenda agenda = new Agenda();
         //        agenda.setProf_id(2);
         //        agenda.setAgenda_hinicio("08:00:00");

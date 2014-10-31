@@ -7,8 +7,11 @@ package utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,8 +20,12 @@ import java.util.logging.Logger;
  * @author Axioma
  */
 public class TFecha {
-
+    public static final String formatoBD = "yyyy-MM-dd";
+    public static final String formatoVista = "dd/MM/yyyy";
+    
     public static String formatearFecha(String fecha, String formatoviejo, String formatonuevo) {
+        if (fecha.equals("")) return "";
+        
         try {
             SimpleDateFormat sdfviejo = new SimpleDateFormat(formatoviejo);
             Date fechanueva = sdfviejo.parse(fecha);
@@ -27,7 +34,7 @@ public class TFecha {
             return sdfnuevo.format(fechanueva);
         } catch (ParseException ex) {
             Logger.getLogger(TFecha.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            return "";
         }
     }
 
@@ -160,6 +167,21 @@ public class TFecha {
             Logger.getLogger(TFecha.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
+    }
+    public static List<Date> getListaDias(Date strDesde, Date strHasta,List filtro){
+        ArrayList<Date> dias = new ArrayList();
+        Calendar fecha = Calendar.getInstance();
+        Calendar hasta  = Calendar.getInstance();        
+        SimpleDateFormat sdf = new SimpleDateFormat(TFecha.formatoBD);    
+        fecha.setTime(strDesde);
+        hasta.setTime(strHasta);
+        while(fecha.compareTo(hasta)<=0){                        
+            if (filtro.contains(fecha.get(Calendar.DAY_OF_WEEK))){
+                dias.add(fecha.getTime());
+            }
+            fecha.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return dias;
     }
     public static String formatearHora(long time){
         return new SimpleDateFormat("HH:mm:ss").format(time);
