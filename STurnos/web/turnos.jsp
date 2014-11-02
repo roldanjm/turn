@@ -175,18 +175,41 @@
                             edit: false,
                             create: false,
                             display: function(data) {
+//                                var $img2 = $('<button class="btn btn-small">Asignar</button>');
+//                                $img2.click(function() {
+//                                    window.location = "<%=PathCfg.ASIGNAR_TURNO%>" + '?turno_id=' + data.record.turno_id 
+//                                });
+//                                return $img2
                                 var $img2 = $('<button class="btn btn-small">Asignar</button>');
                                 $img2.click(function() {
-                                    window.location = "<%=PathCfg.ASIGNAR_TURNO%>" + '?turno_id=' + data.record.turno_id 
+                                    dialog(data.record.turno_id);
                                 });
-                                return $img2
-                           }
+                                return $img2;
+                            }
                     }
                 }
             });
             $(document).ready(function(){
                $('#idTabla').jtable('load',{agenda_id:<%= agenda.getAgenda_id() %>});
             });
+            
+            function dialog(id) {
+                var page = "/AsignarTurnoDlg?turno_id=" + id;
+                var $dialog = $('<div></div>')
+                        .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
+                        .dialog({
+                    autoOpen: false,
+                    modal: true,
+                    height: 500,
+                    width: 800,
+                    title: "ASIGNAR PACIENTE", 
+                    close: function( event, ui ) {
+                        console.log("Close");                    
+                        $('#idTabla').jtable('load',{agenda_id:<%= agenda.getAgenda_id() %>});
+                    }
+                });
+                $dialog.dialog('open');
+        }
         </script>
 </body>
 </html>

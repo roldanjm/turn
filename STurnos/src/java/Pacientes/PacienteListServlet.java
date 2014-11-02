@@ -9,7 +9,10 @@ import bd.Paciente;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,7 +48,9 @@ public class PacienteListServlet extends HttpServlet {
         
         try {
             JsonRespuesta jr = new JsonRespuesta();
-            List<Paciente> lista = new TPaciente().getList();
+            
+            
+            List<Paciente> lista = new TPaciente().getListFiltro(procesarFiltro(request));
             
             if (lista != null) {
                     jr.setTotalRecordCount(lista.size());                  
@@ -57,14 +62,25 @@ public class PacienteListServlet extends HttpServlet {
             jr.setRecords(lista);
 
             Gson gson = new Gson();
-            String jsonResult = gson.toJson(jr);
-            System.out.println(jsonResult);
+            String jsonResult = gson.toJson(jr);            
             out.print(jsonResult);
         } finally {            
             out.close();
         }
     }
+    private Map<String,String> procesarFiltro(HttpServletRequest request){
+        HashMap filtro = new HashMap();
+       Enumeration<String> parameterNames = request.getParameterNames();
+       while(parameterNames.hasMoreElements()){
+           String name = parameterNames.nextElement();
+           if(request.getParameter(name)!=null)
+            filtro.put(name, request.getParameter(name));
+       }
 
+        
+        return filtro;        
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP

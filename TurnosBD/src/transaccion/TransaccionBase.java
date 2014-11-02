@@ -4,12 +4,16 @@
  */
 package transaccion;
 
+import bd.Paciente;
 import conexion.Conexion;
 import conexion.TransaccionRS;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -79,5 +83,41 @@ public class TransaccionBase<E> {
         TransaccionRS t = new TransaccionRS();
         Object object = t.altaObjeto(this.clase.getCanonicalName(), map);
         return (E) object;
+    }
+    public List<E> getListFiltro(Map<String,String> filtro){
+        
+        String where =  " where True ";
+        try {
+            
+            Class claseGenerada = Class.forName(this.clase.getCanonicalName().trim());
+            Object objeto = claseGenerada.newInstance();
+            for (String key : filtro.keySet()) {                
+                Object value = filtro.get(key);
+                Field campo = claseGenerada.getDeclaredField(key);
+                Class<?> type = campo.getType();                
+                
+                if (type.isAssignableFrom(String.class)){
+                    where += String.format(" and %s = '%s'",key,value) ;
+                }else if (type.isAssignableFrom(Integer.class)){
+                    if (value != null)
+                        where += String.format(" and %s = %s",key,value) ;
+                };
+            }
+                
+            } catch (NoSuchFieldException ex) {
+            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String tabla = this.clase.getCanonicalName().replace("bd.", "");
+        String query = "select * from " + tabla  + where;
+        System.out.println(query);
+        return this.getList(query);
     }
 }

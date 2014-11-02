@@ -40,10 +40,12 @@ public class PathCfg {
     public static final String TURNOS_DEL  = "/TurnosDel";
     
     public static final String ASIGNAR_TURNO = "/AsignarTurno";
+    public static final String ASIGNAR_TURNO_DLG = "/AsignarTurnoDlg";
     
     public static final String OBRASOCIAL_PATH = "/ObraSocial";
     public static final String OBRASOCIAL_LIST = "/ObraSocialList";
     public static final String OBRASOCIAL_EDIT = "/ObraSocialEdit";
     public static final String OBRASOCIAL_DEL  = "/ObraSocialDel";
+    
     
 }
