@@ -108,7 +108,7 @@
 
                                 <div class="item clearfix">
                                     <p>                                                      
-                                        <!--<button type="button" class="btn btn-large span12">Nuevo Paciente</button>-->                                        
+                                        <button type="button" class="btn btn-large span12">Asignar Contraturno</button>                                        
                                     </p>
                                 </div>
                             </div>
@@ -124,25 +124,31 @@
                     <div id="idTabla"></div>
                 </div>
             </div>
+        <div id="dialog" title="Cambio de estado">
+            <input type="hidden" id="turno_id" name="turno_id"  value="">
+            <select id="turno_estado" name="turno_estado">
+                <option value='0'>Creado</option>
+                <option value='1'>Asignado</option>
+                <option value='2'>En espera</option>
+                <option value='3'>Finalizado</option>
+                <option value='4'>No disponible</option>                
+            </select>            
+            <div>
+                <h6 id="msgError"></h6>
+            </div>
+            <button class="btn btn-small" id="btnGuardar">Guardar</button>
+        </div>
         </div>
         <script language="javascript">
             $('#idTabla').jtable({
                 title:'Turnos disponibles',
-                paging: true,
+                paging: false,
                 sorting: true,
                 pageSize: 10, //Set page size (default: 10)    
                 actions:{
                     listAction:'<%=PathCfg.TURNOS_LIST%>',
-//                    updateAction:'',
-//                    createAction:'',
-//                    deleteAction:''
                 },
                 fields:{
-                    
-//                    espe_id:{
-//                        title:'',
-//                        options:'<%=PathCfg.OPTIONS%>?type=Especialidades'
-//                    },
                     turno_id:{ key:true,
                                 list:false,
                                 edit:false,
@@ -169,30 +175,67 @@
                        //options:'<%=PathCfg.OPTIONS%>?type=EstadoTurno'                      
                     },
                     Asignar: {
-                            title: '',
-                            width: '2%',
-                            sorting: false,
-                            edit: false,
-                            create: false,
-                            display: function(data) {
-//                                var $img2 = $('<button class="btn btn-small">Asignar</button>');
-//                                $img2.click(function() {
-//                                    window.location = "<%=PathCfg.ASIGNAR_TURNO%>" + '?turno_id=' + data.record.turno_id 
-//                                });
-//                                return $img2
-                                var $img2 = $('<button class="btn btn-small">Asignar</button>');
-                                $img2.click(function() {
-                                    dialog(data.record.turno_id);
-                                });
-                                return $img2;
-                            }
+                        title: '',
+                        width: '2%',
+                        sorting: false,
+                        edit: false,
+                        create: false,
+                        display: function(data) {
+                            var $img2 = $('<button class="btn btn-small">Asignar</button>');
+                            $img2.click(function() {
+                                dialog(data.record.turno_id);
+                            });
+                            return $img2;
+                        }
+                    },
+                    Cambiar: {
+                        title: '',
+                        width: '2%',
+                        sorting: false,
+                        edit: false,
+                        create: false,
+                        display: function(data) {
+//                               
+                            var $img2 = $('<button class="btn btn-small">Cambiar</button>');
+                            $img2.click(function() {
+                                $('#turno_estado').val(data.record.turno_estado);
+                                $('#turno_id').val(data.record.turno_id);
+                                $('#dialog').dialog('open');
+                            });
+                            return $img2;
+                        }
                     }
                 }
             });
             $(document).ready(function(){
-               $('#idTabla').jtable('load',{agenda_id:<%= agenda.getAgenda_id() %>});
+               loadTabla();
+               $('#dialog').dialog({autoOpen: false,
+               width:350,
+           });
+               $('#btnGuardar').click(function(){
+                   $.ajax({
+                        url:'<%=PathCfg.TURNOS_EDIT_ESTADO%>',
+                        type:'POST',
+                        data:{
+                            turno_id:$('#turno_id').val(),
+                            turno_estado:$('#turno_estado').val(),
+                        },
+                        success:function(data){
+                            console.log(data);
+                            loadTabla();
+                            if (data == "OK"){        
+                                $('#msgError').html("");
+                                $('#dialog').dialog('close');
+                            }else{
+                                $('#msgError').html("Ha ocurrido un error al modificar el estado del turno");
+                            }                   
+                        },
+                    });
+              });               
             });
-            
+            function loadTabla(){
+                $('#idTabla').jtable('load',{agenda_id:<%= agenda.getAgenda_id() %>});
+            }
             function dialog(id) {
                 var page = "/AsignarTurnoDlg?turno_id=" + id;
                 var $dialog = $('<div></div>')
