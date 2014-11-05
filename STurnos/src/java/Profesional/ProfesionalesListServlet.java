@@ -8,7 +8,10 @@ import bd.Profesional;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +46,7 @@ public class ProfesionalesListServlet extends HttpServlet {
         
         try {
             JsonRespuesta jr = new JsonRespuesta();            
-            List<Profesional> lista = new TProfesional().getList();
+            List<Profesional> lista = new TProfesional().getListFiltro(procesarFiltro(request));
             if (lista != null) {
                 jr.setTotalRecordCount(lista.size());                  
             } else {
@@ -59,7 +62,20 @@ public class ProfesionalesListServlet extends HttpServlet {
             out.close();
         }
     }
+   
+    private Map<String,String> procesarFiltro(HttpServletRequest request){
+        HashMap filtro = new HashMap();
+       Enumeration<String> parameterNames = request.getParameterNames();
+       
+       while(parameterNames.hasMoreElements()){
+           String name = parameterNames.nextElement();
+           if(request.getParameter(name)!=null && !request.getParameter(name).equals(""))
+                filtro.put(name, request.getParameter(name));
+       }
 
+        
+        return filtro;        
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP

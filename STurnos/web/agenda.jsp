@@ -9,7 +9,6 @@
 <html>  
     <head>
         <jsp:include page="tpl_header.jsp"/>
-        <script type='text/javascript' src='js/plugins/jtable/jquery.jtable.min.js'></script>
     </head>
 </html>
 
@@ -93,6 +92,7 @@
             var $prof_id = $('#prof_id');            
             $('#tablaAgenda').jtable({
                 title:'Administraci&oacute;n de agendas',
+                sorting:true,
                 actions:{
                     listAction:'<%= PathCfg.AGENDA_LIST %>',
                     deleteAction:'<%= PathCfg.AGENDA_DEL %>'

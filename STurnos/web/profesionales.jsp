@@ -1,4 +1,10 @@
+<%@page import="transaccion.TEspecialidad"%>
+<%@page import="bd.Especialidad"%>
+<%@page import="java.util.List"%>
 <%@page import="utilitarios.PathCfg"%>
+<%
+    List<Especialidad> lstEspecialidades = new TEspecialidad().getList();
+%>
 <html>  
     <head>
     <jsp:include page="tpl_header.jsp"/>
@@ -31,11 +37,25 @@
 
                                 <div class="row-form clearfix">
                                     <div class="span4"><label for="prof_matricula">Matricula:<input type="text" id="prof_matricula" name="prof_matricula" value=""/></div>
+                                   <div class="span4">
+                                        <label for="espe_id">Especialidad</label>
+                                            <select name="espe_id" id="espe_id">
+                                                <option value="0">Seleccione una especialidad</option>
+                                            <% for (Especialidad espe: lstEspecialidades) {%>
+                                            <option value="<%= espe.getEspec_id()%>">
+                                                    <%= espe.getEspec_detalle() %></option>
+                                            <% } %>
+                                        </select>
+
+                                    </div>
                                 </div>
                                 <div class="row-form clearfix">
                                     <div class="span4"><label for="prof_nombre">Nombre:<input type="text" id="prof_nombre" name="prof_nombre" value=""/></div>
                                     <div class="span4"><label for="prof_apellido">Apellido:<input type="text" id="prof_apellido" name="prof_apellido" value=""/></div>
-                                </div>          
+                                </div>        
+<!--                                <div class="row-form clearfix">
+                                    
+                                </div>-->
                                 <div class="row-form clearfix">
                                     <button class="btn btn-large" id="btnBuscar">Buscar</button>
                                 </div>
@@ -77,7 +97,7 @@
             </div>
             <div class="row-fluid">
                 <div class="span12">
-                    <div id="tablaPofesional"></div> 
+                    <div id="tablaProfesional"></div> 
                 </div>
             </div>
         </div>
@@ -85,16 +105,11 @@
     </div>
                    
     <script type="text/javascript">
-        $('#tablaPofesional').jtable({
+        $('#tablaProfesional').jtable({
             title: 'Administraci&oacute;n de Profesionales',
             sorting: true,
-            // messages: turkishMessages,
-            //paging: true,
-            //pageSize: 10, //Set page size (default: 10)                                                                                                                
             actions: {
                 listAction:  '<%= PathCfg.PROFESIONALES_LIST %>',
-//                updateAction:'<%= PathCfg.PROFESIONALES_EDIT %>',                                             
-//                createAction:'<%= PathCfg.PROFESIONALES_EDIT %>',
                 deleteAction:'<%= PathCfg.PROFESIONALES_DEL %>',
                 },
                 fields: {
@@ -132,7 +147,17 @@
                 } 
             });
         jQuery(document).ready(function() {                                                        
-                    $('#tablaPofesional').jtable('load');
+                $('#tablaProfesional').jtable('load');
+                
+                $('#btnBuscar').click(function(){
+                    
+                   $('#tablaProfesional').jtable('load',{ 
+                      prof_matricula: $('#prof_matricula').val(),
+                       espe_id: $('#espe_id').val()!=0? $('#espe_id').val() :"",
+                       prof_nombre: $('#prof_nombre').val(),
+                       prof_apellido: $('#prof_apellido').val()
+                    });
+                });
         });
             </script>
 </body>

@@ -74,7 +74,7 @@ public class PacienteListServlet extends HttpServlet {
        
        while(parameterNames.hasMoreElements()){
            String name = parameterNames.nextElement();
-           if(request.getParameter(name)!=null && request.getParameter(name)!="")
+           if(request.getParameter(name)!=null && !request.getParameter(name).equals(""))
                 filtro.put(name, request.getParameter(name));
        }
 
