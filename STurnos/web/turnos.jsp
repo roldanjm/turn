@@ -205,7 +205,17 @@
                             return $img2;
                         }
                     }
-                }
+                }, recordsLoaded:function(event,data){
+                    console.log(data.records);
+                    
+                    for(var i = 0;i<data.records.length;i++){
+                        var d = data.records[i];
+                        if (d.turno_estado != 0){
+                            console.log(d);
+                            $('#idTabla').find('.jtable tbody tr[data-record-key='+ d.turno_id +']').css("color", "gray");
+                        }
+                    }
+                },
             });
             $(document).ready(function(){
                loadTabla();

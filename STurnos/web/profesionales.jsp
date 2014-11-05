@@ -143,8 +143,10 @@
                                 });
                                 return $img2
                            }
-                    }
-                } 
+                    },
+                   
+                    
+                }, 
             });
         jQuery(document).ready(function() {                                                        
                 $('#tablaProfesional').jtable('load');
