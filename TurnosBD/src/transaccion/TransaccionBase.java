@@ -104,8 +104,9 @@ public class TransaccionBase<E> {
                 };
             }
                 
-            } catch (NoSuchFieldException ex) {
-            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchFieldException ex) {   
+                //Si no existe el campo ignoramos la excepción
+           // Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {
             Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {

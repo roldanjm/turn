@@ -71,10 +71,11 @@ public class PacienteListServlet extends HttpServlet {
     private Map<String,String> procesarFiltro(HttpServletRequest request){
         HashMap filtro = new HashMap();
        Enumeration<String> parameterNames = request.getParameterNames();
+       
        while(parameterNames.hasMoreElements()){
            String name = parameterNames.nextElement();
-           if(request.getParameter(name)!=null)
-            filtro.put(name, request.getParameter(name));
+           if(request.getParameter(name)!=null && request.getParameter(name)!="")
+                filtro.put(name, request.getParameter(name));
        }
 
         

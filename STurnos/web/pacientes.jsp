@@ -1,5 +1,8 @@
 <%@page import="utils.TFecha"%>
 <%@page import="utilitarios.PathCfg"%>
+<%
+        String[] lstTipoDocu = {"","DNI", "CI", "LE", "LC", "LE", "LC"};    
+%>
 <html>  
     <head>
     <jsp:include page="tpl_header.jsp"/>
@@ -35,11 +38,25 @@
                             <div class="block-fluid">                        
 
                                 <div class="row-form clearfix">
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>                            
+                                    <div class="span2"><label for="tipodoc_id" >Tipo Doc.</label>
+                                <select name="tipodoc_id" id="tipodoc_id" >
+                                        <option>  </option>                                                                  
+                                            <% for (int i = 0;i<lstTipoDocu.length;i++) {
+                                            String tipo = lstTipoDocu[i]; %>
+                                            <option value="<%=i%>"><%= tipo%></option>                                                                    
+                                            <% }%>
+                                </select></div>
+                                    <div class="span4"><label for="pac_nrodoc" >N&uacute;mero:<input type="text" name="pac_nrodoc" id="pac_nrodoc" value=""/></label></div>
+                                </div>
+                                <div class="row-form clearfix">
+                                    <div class="span4"><label for="pac_nombre" >Nombre:<input type="text" name="pac_nombre" id="pac_nombre" value=""/></label></div>
+                                    <div class="span4"><label for="pac_apellido" >Apellido:<input type="text" name="pac_apellido" id="pac_apellido" value=""/></label></div>
                                 </div>                                                               
-
+                                <div class="row-form clearfix">
+                                    <p>
+                                        <button class="btn btn-large" id="btnBuscar">Buscar</button>
+                                    </p>
+                                </div>
                                                                                                                      
                             </div>
                         </div>
@@ -192,6 +209,14 @@
         }
         jQuery(document).ready(function() {                     
           $('#tablaPacientesList').jtable('load');
+            $('#btnBuscar').click(function(){
+                $('#tablaPacientesList').jtable('load',{
+                    tipodoc_id:$('#tipodoc_id').val(),
+                    pac_nrodoc:$('#pac_nrodoc').val(),
+                    pac_nombre:$('#pac_nombre').val(),
+                    pac_apellido:$('#pac_apellido').val(),
+                });
+            });
         });
             </script>
 </body>

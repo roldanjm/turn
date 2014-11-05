@@ -30,10 +30,15 @@
                             <div class="block-fluid">                        
 
                                 <div class="row-form clearfix">
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>                            
-                                </div>                                                               
+                                    <div class="span4"><label for="prof_matricula">Matricula:<input type="text" id="prof_matricula" name="prof_matricula" value=""/></div>
+                                </div>
+                                <div class="row-form clearfix">
+                                    <div class="span4"><label for="prof_nombre">Nombre:<input type="text" id="prof_nombre" name="prof_nombre" value=""/></div>
+                                    <div class="span4"><label for="prof_apellido">Apellido:<input type="text" id="prof_apellido" name="prof_apellido" value=""/></div>
+                                </div>          
+                                <div class="row-form clearfix">
+                                    <button class="btn btn-large" id="btnBuscar">Buscar</button>
+                                </div>
 
                                                                                                                      
                             </div>
