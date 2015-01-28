@@ -91,25 +91,31 @@ public class TransaccionBase<E> {
             
             Class claseGenerada = Class.forName(this.clase.getCanonicalName().trim());
             Object objeto = claseGenerada.newInstance();
-            for (String key : filtro.keySet()) {                
+            for (String key : filtro.keySet()) {   
+                System.out.print(key + ":");
                 Object value = filtro.get(key);
-                Field campo = claseGenerada.getDeclaredField(key);
-                Class<?> type = campo.getType();                
+                System.out.println(value );                
+                try{
+                    Field campo = claseGenerada.getDeclaredField(key);                
+                    Class<?> type = campo.getType();                
                 
                 if (type.isAssignableFrom(String.class)){
-                    where += String.format(" and %s = '%s'",key,value) ;
+//                    where += String.format(" and %s = '%s'",key,value) ;
+                    where += String.format(" and %s like '%%%s%%'",key,value) ;
                 }else if (type.isAssignableFrom(Integer.class)){
                     if (value != null)
                         where += String.format(" and %s = %s",key,value) ;
                 };
+                } catch (NoSuchFieldException ex) {   
+                    //Si no existe el campo ignoramos la excepción
+                    // Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                catch (SecurityException ex) {
+                    Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                } 
             }
                 
-            } catch (NoSuchFieldException ex) {   
-                //Si no existe el campo ignoramos la excepción
-           // Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        }catch (InstantiationException ex) {
             Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             Logger.getLogger(TPaciente.class.getName()).log(Level.SEVERE, null, ex);

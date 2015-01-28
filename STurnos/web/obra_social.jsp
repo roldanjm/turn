@@ -31,11 +31,16 @@
                             <div class="block-fluid">                        
 
                                 <div class="row-form clearfix">
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>                            
+                                    <div class="span4"><label for="os_nombre" >Nombre:<input type="text" name="os_nombre" id="os_nombre" value=""/></label></div>
+                                </div>
+                                <div class="row-form clearfix">
+                                    <div class="span4"><label for="os_cuit" >Cuit:<input type="text" name="os_cuit" id="os_cuit" value=""/></label></div>
                                 </div>                                                               
-
+                                <div class="row-form clearfix">
+                                    <p>
+                                        <button class="btn btn-small" id="btnBuscar">Buscar</button>
+                                    </p>
+                                </div>
                                                                                                                      
                             </div>
                         </div>
@@ -77,9 +82,9 @@
             var idTabla = "#obraSocial";
             $(idTabla).jtable({
                 title:'Obras Sociales',
-                paging: true,
-                sorting: true,
-                pageSize: 10, //Set page size (default: 10)    
+//                paging: true,
+//                sorting: true,
+//                pageSize: 10, //Set page size (default: 10)    
                 actions:{
                     listAction:  '<%= PathCfg.OBRASOCIAL_LIST %>',
                     updateAction:'<%= PathCfg.OBRASOCIAL_EDIT %>',
@@ -109,6 +114,13 @@
             });
             $(document).ready(function(){
                $(idTabla).jtable('load');
+               
+               $('#btnBuscar').click(function(){
+                $(idTabla).jtable('load',{
+                    os_nombre: $('#os_nombre').val(),
+                    os_cuit  : $('#os_cuit').val(),
+                });
+                });
             });
         </script>
 </body>

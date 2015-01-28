@@ -30,15 +30,17 @@
                                     <li class="toggle"><a href="#"></a></li>
                                 </ul> 
                             </div>
-                            <div class="block-fluid">                        
-
+                            <div class="block-fluid">
                                 <div class="row-form clearfix">
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>                            
-                                </div>                                                               
-
-
+                                    <div class="span4"><label>Especialidad:
+                                        <input type="text" name="espec_detalle" id="espec_detalle" value=""/>
+                                        </label>
+                                    </div>
+                                
+                                    <div class="span4">
+                                        <button class="btn btn-small" id="btnBuscar">Buscar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -56,8 +58,6 @@
 
                     </div>
                 </div>
-
-
             </div>
 
             <div class="row-fluid">
@@ -78,7 +78,7 @@
 
             //pageSize: 10, //Set page size (default: 10)                                                                                                                
             actions: {
-                listAction: '<%= PathCfg.ESPECIALIDADES_LIST%>',
+                listAction:   '<%= PathCfg.ESPECIALIDADES_LIST%>',
                 updateAction: '<%= PathCfg.ESPECIALIDADES_EDIT%>',
                 createAction: '<%= PathCfg.ESPECIALIDADES_EDIT%>',
                 deleteAction: '<%= PathCfg.ESPECIALIDADES_DEL%>',
@@ -96,6 +96,13 @@
         });
         jQuery(document).ready(function() {
             $('#tablaEspecialidad').jtable('load');
+            $('#btnBuscar').click(function(){
+                console.log("Buscar");
+                
+                $('#tablaEspecialidad').jtable('load',{
+                    espec_detalle:$('#espec_detalle').val()
+                });
+            });
         });
     </script>
 </body>

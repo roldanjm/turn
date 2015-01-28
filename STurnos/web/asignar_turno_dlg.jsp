@@ -14,7 +14,7 @@
     Paciente pacAsignado = (Paciente) request.getAttribute("paciente");
    
     if(asignar == null) asignar = new Asignar();
-    String[] lstTipoDocu = {"","DNI", "CI", "LE", "LC", "LE", "LC"};    
+    String[] lstTipoDocu = {"DNI", "CI", "LE", "LC", "LE", "LC"};    
 %>
 <html>  
     <head>
@@ -23,23 +23,21 @@
     </head>
 </html>
 <body>
-    <div class="content">        
+    <!--<div class="content">-->        
         <div class="workplace">            
             <div class="row-fluid">                
                 <div class="span12">
-                    <div class="head clearfix">
+<!--                    <div class="head clearfix">
                         <div class="isw-grid"></div>
                         <h1>Asignar paciente</h1>
-                    </div>
+                    </div>-->
                     <div class="block-fluid">
                         <% if(! turnoAsignado) {%>
-                        
-                        
                             
                         <div class="row-form clearfix">
                             <div class="span2"><label for=tipodoc_id">Tipo Doc.</label>
                                 <select name="tipodoc_id" id="tipodoc_id" >
-                                        <option>  </option>                                                                  
+                                        <option value=""></option>
                                             <% for (int i = 0;i<lstTipoDocu.length;i++) {
                                             String tipo = lstTipoDocu[i]; %>
                                             <option value="<%=i%>"><%= tipo%></option>                                                                    
@@ -51,22 +49,34 @@
                                     <input type="text" name="pac_nrodoc" id="pac_nrodoc" value="" />
                             </div>  
                             
-                            <div class="span3 btn-block">                                
-                                <button class="btn " id="btnBuscar">Buscar</button>
-                            </div>                                                                                                                                                                
+                                                                                                                                                              
                         </div>         
+                        
+                        <div class="row-form clearfix ">
+                            <div class="span2"><label for=pac_nombre">Nombre</label>
+                                <input type="text" name="pac_nombre" id="pac_nombre" value="" />
+                            </div>  
+                            <div class="span2">
+                                <label for=pac_apellido">Apellido</label>
+                                <input type="text" name="pac_apellido" id="pac_apellido" value="" />
+                            </div>  
+                            
+                                                                                                                                                                                   
+                        </div>     
+                            <div class="row-form clearfix">
+                                  <div class="span3 btn-block">                                
+                                    <button class="btn " id="btnBuscar">Buscar</button>
+                                  </div>
+                                
+                            </div>       
+                            
                         <form action="<%=PathCfg.ASIGNAR_TURNO_DLG%>" method="POST">
                             <input type="hidden" name="asignar_id" id="asignar_id" value="<%=asignar.getAsignar_id()%>"/>
                             <input type="hidden" name="turno_id" id="turno_id" value="<%=turno.getTurno_id()%>"/>
 
-                        <div class="row-form clearfix">
+                        <div class="row-form clearfix" style="display:none">
                             <div class="item clearfix" id="lstPacientes"> </div>
-                            <div class="item clearfix">
-                                <p>                                                      
-                                    <input type="submit" class="btn btn-large span2" value="Guardar">
-                                </p>
-                            </div>
-                        </div>  
+                            </div>                          
                       </form>      
                     <%} else {%>
                             <div class="row-form clearfix">
@@ -86,12 +96,10 @@
                 </div>
                 
             </div>            
-        </div>
+        <!--</div>--> <!--Content -->
 <script>
     $(document).ready(function(){
         $('#btnBuscar').click(function(){
-            console.log("click");
-        
             $.ajax({url:'<%= PathCfg.PACIENTES_LIST%>',
                 dataType:'json',
                 type:'POST',
@@ -103,32 +111,74 @@
                 data:{
                     tipodoc_id: $('#tipodoc_id').val(),
                     pac_nrodoc:$('#pac_nrodoc').val(),
+                    pac_nombre:$('#pac_nombre').val(),
+                    pac_apellido:$('#pac_apellido').val(),
                 },
-                success:function(data){
-                    console.log(data);
+                success:function(data){                    
                     if (data.Result == "OK"){
+                        console.log(data);
                         $('#lstPacientes').html(construirTabla(data.Records));
-                    }                    
+                        $('#lstPacientes').parent().css('display','block')
+                    }else 
+                        $('#lstPacientes').html("");
                 },
                 
             })            
         });
     });
+    var lstTipoDocu = {0:"",
+                       1:"DNI",
+                       2:"CE",
+                       3:"CI",
+                       4: "CUIL",};
+                       
     function construirTabla(data){
         var html = "";
         if (data == undefined) {
             html += "<h6>No se encontro ningún paciente con ese tipo y número de documento</h6>";
         }
         else {
-            html += "<h6>Seleccione el paciente</h6><ul style='list-style:none'>";    
+            html += "<h6>Seleccione el paciente</h6>";  
+            html += "<table>";
+            html +="<thead><th>Apellido y Nombre<th>Nro. Doc.</th><th></th><tbody>";
             for(var i = 0; i<data.length;i++){
+                
                 var p = data[i];
                 id = "pac_" + p.pac_id;
-                html += "<li><label for='" + id + "'><input type='radio' name='pac_id' id='" + id  + "' value='" + p.pac_id +"'>" + p.pac_apellido + ", " + p.pac_nombre + "</label></li>";
+                html += "<tr>";
+                html +="<td>" + p.pac_apellido + ", " + p.pac_nombre + "</td>";
+                html +="<td>" + lstTipoDocu[p.tipodoc_id] + " " + p.pac_nrodoc +"</td>";
+//                html +="<td>" + p.pac_fnacimiento + "</td>";
+//                html +="<td>" + p.pac_fnacimiento + "</td>";
+                html +="<td><span class='icon-plus' onclick='asignar("+ p.pac_id +")'><span></td>";
+                html +="</tr>";
             }
-            html+="</ul>";
+            html+="</tbody></table>";
         }
         return html;
+    }
+    function asignar(id){
+        $.ajax({url:'<%=PathCfg.ASIGNAR_TURNO_DLG%>',
+                //dataType:'json',
+                type:'POST',
+                statusCode: {
+                    404: function() {
+                      alert( "page not found" );
+                    }
+                  },
+                data:{
+                     pac_id:id,
+                     asignar_id:$('#asignar_id').val(),
+                     turno_id:$('#turno_id').val(),
+                },
+                success:function(data){
+                    console.log(data); 
+                    window.location = "<%=PathCfg.ASIGNAR_TURNO_DLG%>" + "?turno_id=" + $('#turno_id').val();
+                },
+                
+            });            
+        
+        
     }
 </script>
                         

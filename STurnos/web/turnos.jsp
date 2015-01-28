@@ -29,29 +29,6 @@
             </div>
             <div class="row-fluid">
                 <div class="span12">
-
-                    <!--<div class="span8">-->
-<!--                        <div class="span12">
-                            <div class="head clearfix">
-                                <div class="isw-grid"></div>
-                                <h1>Busqueda</h1>
-                                <ul class="buttons">                                        
-                                <li class="toggle"><a href="#"></a></li>
-                            </ul> 
-                            </div>
-                            <div class="block-fluid">                        
-
-                                <div class="row-form clearfix">
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>
-                                    <div class="span4"><input type="text" value="span4"/></div>                            
-                                </div>                                                               
-
-                                                                                                                     
-                            </div>
-                        </div>-->
-
-                    <!--</div>-->
                     <div class="span8">
                         <div class="head clearfix">
                             <div class="isw-calendar"></div>
@@ -108,7 +85,7 @@
 
                                 <div class="item clearfix">
                                     <p>                                                      
-                                        <button type="button" class="btn btn-large span12">Asignar Contraturno</button>                                        
+                                        <button type="button" id="sobreturno" class="btn btn-large span12">Asignar Sobreturno</button>                                        
                                     </p>
                                 </div>
                             </div>
@@ -220,8 +197,8 @@
             $(document).ready(function(){
                loadTabla();
                $('#dialog').dialog({autoOpen: false,
-               width:350,
-           });
+                                    width:350,
+                                    });
                $('#btnGuardar').click(function(){
                    $.ajax({
                         url:'<%=PathCfg.TURNOS_EDIT_ESTADO%>',
@@ -241,7 +218,10 @@
                             }                   
                         },
                     });
-              });               
+              });        
+              $('#sobreturno').click(function(){
+              //Mostrar el dialogo de sobreturno.
+              });
             });
             function loadTabla(){
                 $('#idTabla').jtable('load',{agenda_id:<%= agenda.getAgenda_id() %>});

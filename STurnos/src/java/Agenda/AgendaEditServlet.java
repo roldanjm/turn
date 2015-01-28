@@ -42,18 +42,21 @@ public class AgendaEditServlet extends HttpServlet {
         
         int agenda_id;
         Agenda agenda = null;
+        boolean actualizar = true;
         try{
             agenda_id = Integer.parseInt(request.getParameter("agenda_id"));
             agenda = new TAgenda().getById(agenda_id);
+            actualizar = agenda_id != 0? puedeActualizar(agenda_id):false;
         }catch(NumberFormatException ex){ } 
         if (agenda == null){             
             response.sendRedirect(PathCfg.AGENDA_PATH);
             return;
         }else {
             request.setAttribute("agenda", agenda);
+            request.setAttribute("actualizar",actualizar);
             request.getRequestDispatcher("agenda_edit.jsp").forward(request, response);
         }
-        }
+    }
     
 
     /**
@@ -81,21 +84,16 @@ public class AgendaEditServlet extends HttpServlet {
             agenda_intervalo = Integer.parseInt(request.getParameter("agenda_intervalo"));
         }catch(NumberFormatException ex){ }
 
-        if ( id > 0){
-            List<Turno> lstTurnos = new TTurno().getListAgenda(id); // Recupero la lista de turnos de la agenda
-            boolean puedeActualizar  = true;
-
-            if (lstTurnos==null){ puedeActualizar = true;}
-            else {
-                for(Turno turno:lstTurnos){ //Chequeo que no haya ningún turno asignado
-                    if(turno.getTurno_estado()!=0) puedeActualizar = false;
-                }
-            }   
-            if(puedeActualizar){                    
+        if ( id > 0){           
+            if(puedeActualizar(id)){       
+                List<Turno> lstTurnos = new TTurno().getListAgenda(id); // Recupero la lista de turnos de la agenda
                 for(Turno turno:lstTurnos){
                     // Borramos los turnos
                     new TTurno().baja(turno);
                 }
+                agenda.setAgenda_turn_cant(lstTurnos.size());
+                agenda.setAgenda_turn_asig(lstTurnos.size());
+                
                 todoOk = ta.actualizar(agenda, "agenda_id");
                 //Creamos los nuevos turnos
                 List<Turno> listaTurnos = ta.getListaTurnos(agenda);
@@ -125,4 +123,21 @@ public class AgendaEditServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    public boolean puedeActualizar(Integer agenda_id){
+        List<Turno> lstTurnos = new TTurno().getListAgenda(agenda_id); // Recupero la lista de turnos de la agenda
+        boolean puedeActualizar  = true;
+
+        if (lstTurnos==null){ 
+            puedeActualizar = true;
+        } else {
+            for(Turno turno:lstTurnos){ //Chequeo que no haya ningún turno asignado
+                if(turno.getTurno_estado()!=0) {
+                    puedeActualizar = false;
+                    break;                    
+                }
+            }
+        }   
+        return puedeActualizar;
+    }
 }

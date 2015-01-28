@@ -124,7 +124,7 @@
                     prof_apellido:{title:'Apellido'},
                     prof_domicilio:{list:false,title:'Domicilio'},
                     prof_telefono:{list:false,title:'Telefono'},
-                    prof_ceular:{title:'Celular'},
+                    prof_celular:{title:'Celular'},
                     espe_id:{
                         title:'Especialidad',
                         options:'<%=PathCfg.OPTIONS%>?type=Especialidades'                      

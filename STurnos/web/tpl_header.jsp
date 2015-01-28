@@ -46,6 +46,8 @@
 <script type='text/javascript' src='js/plugins/jtable/jquery.jtable.min.js'></script>
 <script type="text/javascript" src="js/plugins/jtable/localization/jquery.jtable.es.js"></script>
 
+<!--<script type="text/javascript" src="js/plugins/birthdaypicker/jquery-birthday-picker.min.js"></script>-->
+
 
 
     

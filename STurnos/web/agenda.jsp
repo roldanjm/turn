@@ -112,6 +112,13 @@
                             return formatDate(new Date(getDateFromFormat(data.record.agenda_dia,"<%= TFecha.formatoBD %>")),"<%= TFecha.formatoVista%>")
                         },
                     },
+                    agenda_turnos:{
+                        title:"Turnos",
+                        display:function(data){
+                            console.log(data.record);                        
+                            return data.record.agenda_turn_asig+ "/" + data.record.agenda_turn_cant;                    
+                        }                
+                    },
                     agenda_consultorio:{
                         title:'Consultorio',
                     },
@@ -157,16 +164,13 @@
 
                 },
             });
-            /* 
-            * $prof_id.change(function(){                
-                loadTabla($(this).val());
-            });
-            */
+           
             $(document).ready(function(){
                 //loadTabla($('#prof_id').val());
                 $('#buscar').click(function(){
                     loadTabla($('#prof_id').val(),$('#agenda_dia').val());
                 });
+                loadTabla($('#prof_id').val(),$('#agenda_dia').val());
                 $('#agenda_dia').datepicker();
             });
             function loadTabla(id,dia){

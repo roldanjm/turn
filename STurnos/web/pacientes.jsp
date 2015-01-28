@@ -104,7 +104,7 @@
                 pageSize: 10, //Set page size (default: 10)                                                                                                                
                 actions: {
                     listAction:'<%= PathCfg.PACIENTES_LIST %>',
-                    updateAction:'<%= PathCfg.PACIENTES_EDIT %>', 
+                    /* updateAction:'<%= PathCfg.PACIENTES_EDIT %>',  */
                     deleteAction:'<%= PathCfg.PACIENTES_DEL %>'
                     },
                     fields: {

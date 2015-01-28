@@ -5,6 +5,7 @@ package Asignar;
  * and open the template in the editor.
  */
 
+import bd.Agenda;
 import bd.Asignar;
 import bd.Paciente;
 import bd.Turno;
@@ -15,9 +16,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TAgenda;
 import transaccion.TAsignar;
 import transaccion.TPaciente;
 import transaccion.TTurno;
+import utilitarios.CustomHttpServlet;
 import utilitarios.PathCfg;
 import utils.TFecha;
 
@@ -51,6 +54,7 @@ public class AsignarTurnoServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Asignar asignar = null;
@@ -83,7 +87,6 @@ public class AsignarTurnoServlet extends HttpServlet {
             throws ServletException, IOException {
            
         try{
-//            int asignar_id = Integer.parseInt(request.getParameter("asignar_id"));
             Asignar asignar = new Asignar();
             int turno_id = Integer.parseInt(request.getParameter("turno_id"));
             int pac_id = Integer.parseInt(request.getParameter("pac_id"));
@@ -98,6 +101,10 @@ public class AsignarTurnoServlet extends HttpServlet {
                 if(asignar_id != 0){
                     turno.setTurno_estado(1);
                     tturno.actualizar(turno);
+                    // Actualizamos la cantidad de turnos disponibles
+                    Agenda agenda = new TAgenda().getById(turno.getAgenda_id());
+                    agenda.setAgenda_turn_asig(agenda.getAgenda_turn_asig() + 1);
+                    new TAgenda().actualizar(agenda);
                     response.sendRedirect(PathCfg.TURNOS_PATH+"?agenda_id=" + turno.getAgenda_id());                
                 }
             }

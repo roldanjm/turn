@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TAgenda;
+import utilitarios.CustomHttpServlet;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 import utils.TFecha;
@@ -27,7 +28,7 @@ import utils.TFecha;
  * @author Diego
  */
 @WebServlet(name="AgendaListServlet",urlPatterns={PathCfg.AGENDA_LIST})
-public class AgendaListServlet extends HttpServlet {
+public class AgendaListServlet extends CustomHttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -54,7 +55,8 @@ public class AgendaListServlet extends HttpServlet {
                 agenda_dia = TFecha.formatearFecha(request.getParameter("agenda_dia"),TFecha.formatoVista,TFecha.formatoVista);
             } catch(NumberFormatException ex){ }
             
-            List<Agenda> lista = new TAgenda().getList(procesarParametros(request));//getListByProf(prof_id);
+            //List<Agenda> lista = new TAgenda().getList(procesarParametros(request));//getListByProf(prof_id);
+            List<Agenda> lista = new TAgenda().getListFiltro(this.procesarFiltro(request));//getListByProf(prof_id);
             if (lista != null) {
                 jr.setTotalRecordCount(lista.size());                  
             } else {
@@ -70,14 +72,12 @@ public class AgendaListServlet extends HttpServlet {
             out.close();
         } 
  }
- private HashMap<String,String> procesarParametros(HttpServletRequest request){
+ 
+  @Override
+   public HashMap<String,String> procesarFiltro(HttpServletRequest request){
      HashMap<String,String> filtro = new HashMap<String,String>();
-//     String key = "";
-//     for(Enumeration<String> names = request.getParameterNames();names.hasMoreElements();key = names.nextElement()){
-//        filtro.put(key, request.getParameter(key));
-//        System.out.println(key + " -> " + request.getParameter(key) );
-//    }
-    if(request.getParameter("prof_id")!=null){    
+
+    if(request.getParameter("prof_id")!=null && !request.getParameter("prof_id").equals("0")){    
         filtro.put("prof_id", request.getParameter("prof_id"));
     }
     if(request.getParameter("agenda_dia")!=null){     
@@ -85,6 +85,7 @@ public class AgendaListServlet extends HttpServlet {
     }
      return filtro;
  }
+
     
     /**
      * Handles the HTTP

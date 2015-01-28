@@ -5,16 +5,17 @@ package Asignar;
  * and open the template in the editor.
  */
 
+import bd.Agenda;
 import bd.Asignar;
 import bd.Paciente;
 import bd.Turno;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import transaccion.TAgenda;
 import transaccion.TAsignar;
 import transaccion.TPaciente;
 import transaccion.TTurno;
@@ -25,7 +26,7 @@ import utils.TFecha;
  *
  * @author Diego
  */
-@WebServlet(name="AsignarTurnoServlet",urlPatterns={PathCfg.ASIGNAR_TURNO_DLG})
+@WebServlet(name="AsignarTurnoDialogServlet",urlPatterns={PathCfg.ASIGNAR_TURNO_DLG})
 public class AsignarTurnoDialogServlet extends HttpServlet {
 
     /**
@@ -39,7 +40,6 @@ public class AsignarTurnoDialogServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-
 
     /**
      * Handles the HTTP
@@ -90,21 +90,26 @@ public class AsignarTurnoDialogServlet extends HttpServlet {
             throws ServletException, IOException {
            
         try{
-//            int asignar_id = Integer.parseInt(request.getParameter("asignar_id"));
             Asignar asignar = new Asignar();
             int turno_id = Integer.parseInt(request.getParameter("turno_id"));
             int pac_id = Integer.parseInt(request.getParameter("pac_id"));
             TTurno tturno = new TTurno();
             Turno turno = tturno.getById(turno_id);
+            
             Paciente paciente = new TPaciente().getById(pac_id);
             if (turno!=null & paciente!=null) {
+                
                 asignar.setTurno_id(turno_id);
                 asignar.setPac_id(pac_id);
                 asignar.setAsignar_fecha(TFecha.ahora());
                 int asignar_id = new TAsignar().alta(asignar);
-                if(asignar_id != 0){
+                if(asignar_id != 0){                    
                     turno.setTurno_estado(1);
                     tturno.actualizar(turno);
+                    // Actualizamos la cantidad de turnos disponibles
+                    Agenda agenda = new TAgenda().getById(turno.getAgenda_id());
+                    agenda.setAgenda_turn_asig(agenda.getAgenda_turn_asig() + 1);
+                    new TAgenda().actualizar(agenda);
                     response.sendRedirect(PathCfg.ASIGNAR_TURNO_DLG+"?turno_id="+turno.getTurno_id());
                 }
             }

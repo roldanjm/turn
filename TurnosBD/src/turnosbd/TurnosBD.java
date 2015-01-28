@@ -56,18 +56,21 @@ public class TurnosBD {
         HashMap filtro = new HashMap();
 //        filtro.put("tipodoc_id", "1");
 //        filtro.put("pac_nrodoc","30917257");
-        filtro.put("prof_matricula", "123456");
-        
-//        List<Paciente> listFiltro = new TPaciente().getListFiltro(filtro);
-        List<Profesional> listFiltro1 = new TProfesional().getListFiltro(filtro);
-        for(Profesional profesional:listFiltro1){
-            profesional.getProf_apellido();
+//        filtro.put("prof_matricula", "123456");
+        filtro.put("os_nombre","OS");
+        List<Obra_social> listFiltro = new TObraSocial().getListFiltro(filtro);
+        for (Iterator<Obra_social> it = listFiltro.iterator(); it.hasNext();) {
+            Obra_social os = it.next();
+            System.out.println(os.getOs_nombre());            
         }
-//        for(Paciente paciente:listFiltro){
-//            System.out.println(paciente.getPac_apellido());
-//        }
-        
-        
+        //        List<Paciente> listFiltro = new TPaciente().getListFiltro(filtro);
+        //        List<Profesional> listFiltro1 = new TProfesional().getListFiltro(filtro);
+        //        for(Profesional profesional:listFiltro1){
+        //            profesional.getProf_apellido();
+        //        }
+        //        for(Paciente paciente:listFiltro){
+        //            System.out.println(paciente.getPac_apellido());
+        //        }
         //List<Date> listaDias = TFecha.getListaDias("2014-10-26", "2014-10-31", dias);
         //        for(Date dia: listaDias){
         //            System.out.println(TFecha.formatearFecha(dia,TFecha.formatoVista));

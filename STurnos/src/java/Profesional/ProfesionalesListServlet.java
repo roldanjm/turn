@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TProfesional;
+import utilitarios.CustomHttpServlet;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -26,7 +27,7 @@ import utilitarios.PathCfg;
  * @author Diego
  */
 @WebServlet(name="ProfesionalesListServlet",urlPatterns={PathCfg.PROFESIONALES_LIST})
-public class ProfesionalesListServlet extends HttpServlet {
+public class ProfesionalesListServlet extends CustomHttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -63,19 +64,7 @@ public class ProfesionalesListServlet extends HttpServlet {
         }
     }
    
-    private Map<String,String> procesarFiltro(HttpServletRequest request){
-        HashMap filtro = new HashMap();
-       Enumeration<String> parameterNames = request.getParameterNames();
-       
-       while(parameterNames.hasMoreElements()){
-           String name = parameterNames.nextElement();
-           if(request.getParameter(name)!=null && !request.getParameter(name).equals(""))
-                filtro.put(name, request.getParameter(name));
-       }
-
-        
-        return filtro;        
-    }
+   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP

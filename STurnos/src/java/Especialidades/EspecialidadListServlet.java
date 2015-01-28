@@ -9,13 +9,17 @@ import bd.Especialidad;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TEspecialidad;
+import utilitarios.CustomHttpServlet;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -24,7 +28,7 @@ import utilitarios.PathCfg;
  * @author Diego
  */
 @WebServlet(name = "EspecialidadListServlet", urlPatterns = {PathCfg.ESPECIALIDADES_LIST})
-public class EspecialidadListServlet extends HttpServlet {
+public class EspecialidadListServlet extends CustomHttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -43,7 +47,7 @@ public class EspecialidadListServlet extends HttpServlet {
         
         try {
             JsonRespuesta jr = new JsonRespuesta();
-            List<Especialidad> lista = new TEspecialidad().getList();
+            List<Especialidad> lista = new TEspecialidad().getListFiltro(procesarFiltro(request));
             if (lista != null) {
                 jr.setTotalRecordCount(lista.size());                  
             } else {
@@ -102,4 +106,6 @@ public class EspecialidadListServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    
 }

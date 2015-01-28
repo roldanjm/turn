@@ -8,6 +8,8 @@
 <%
     List<Profesional> lstProfesional = new TProfesional().getList();
     Agenda agenda = (Agenda) request.getAttribute("agenda");    
+    boolean actualizar = (Boolean) request.getAttribute("actualizar");
+    
     int[] lstIntervalos = {10,15,30,45,60};
 %>
 <html>  
@@ -17,7 +19,7 @@
     </head>
 </html>
 
-<body>
+<body>    
     <jsp:include page="tpl_logo.jsp"/>
     <jsp:include page="tpl_menu.jsp"/>
     <div class="content">
@@ -82,7 +84,11 @@
                         <div class="row-form clearfix">
                             <div class="item clearfix">
                                 <p>                                                      
-                                    <input type="submit" class="btn btn-large span2" value="Guardar">
+                                    <% if(actualizar) {%>
+                                        <input type="submit" class="btn btn-large span2" value="Guardar">
+                                    <% } else {%>
+                                        <div class="alert alert-error">La agenda tiene turnos asignados. No es posible modificarla.</div>
+                                    <% } %>
                                 </p>
                             </div>
                         </div>                           

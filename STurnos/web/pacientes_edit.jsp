@@ -67,7 +67,8 @@
                                 </select>
                             </div>  
                         
-                                    <div class="span2"><label for="pac_fnacimiento">Fecha Nacimiento:</label><input type="text" name="pac_fnacimiento" id="pac_fnacimiento" value="<%= TFecha.formatearFecha(paciente.getPac_fnacimiento(),TFecha.formatoBD, TFecha.formatoVista)%>" /></div>
+                                <div class="span2">
+                                        <label for="pac_fnacimiento">Fecha Nacimiento:</label><input type="text" name="pac_fnacimiento" id="pac_fnacimiento" value="<%= TFecha.formatearFecha(paciente.getPac_fnacimiento(),TFecha.formatoBD, TFecha.formatoVista)%>" /></div>
                             <div class="span1"><label for=tipodoc_id">Tipo Doc.</label>
                                     <select name="tipodoc_id" id="pac_nrodoc" value="" >
                                         <option>  </option>                                                                  
@@ -174,7 +175,13 @@
                 if($('#prov_id').val() != 0){
                     cargarLocalidades($('#prov_id').val(),<%= paciente.getLoc_id()%>);
                 }
-                $('#pac_fnacimiento').datepicker();
+                $('#pac_fnacimiento').datepicker({
+                      //yearRange: "-20:+0", // this is the option you're looking for                      
+                      changeYear: true, 
+                      yearRange : '-90:+0',
+                      changeMonth: true,
+                });
+
             });
             
             function cargarLocalidades(prov_id,loc_default){

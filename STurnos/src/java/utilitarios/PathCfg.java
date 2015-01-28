@@ -13,7 +13,7 @@ public class PathCfg {
     public static final String ESPECIALIDADES_PATH = "/Especialidades";
     public static final String ESPECIALIDADES_LIST = "/EspecialidadesList";
     public static final String ESPECIALIDADES_EDIT = "/EspecialidadesEdit";
-    public static final String ESPECIALIDADES_DEL = "/EspecialidadesDel";
+    public static final String ESPECIALIDADES_DEL  = "/EspecialidadesDel";
     
     public static final String PACIENTES_PATH      = "/Pacientes";
     public static final String PACIENTES_LIST      = "/PacientesList";
@@ -40,13 +40,14 @@ public class PathCfg {
     public static final String TURNOS_EDIT_ESTADO = "/TurnosEditEstado";
     public static final String TURNOS_DEL  = "/TurnosDel";
     
-    public static final String ASIGNAR_TURNO = "/AsignarTurno";
-    public static final String ASIGNAR_TURNO_DLG = "/AsignarTurnoDlg";
+   
+    public static final String ASIGNAR_TURNO      = "/AsignarTurno";
+    public static final String ASIGNAR_TURNO_DLG  = "/AsignarTurnoDlg";
+    public static final String ASIGNAR_SOBRETURNO = "/Sobreturno";
     
     public static final String OBRASOCIAL_PATH = "/ObraSocial";
     public static final String OBRASOCIAL_LIST = "/ObraSocialList";
     public static final String OBRASOCIAL_EDIT = "/ObraSocialEdit";
     public static final String OBRASOCIAL_DEL  = "/ObraSocialDel";
-    
-    
+
 }

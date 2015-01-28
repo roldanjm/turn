@@ -9,12 +9,14 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TObraSocial;
+import utilitarios.CustomHttpServlet;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -23,7 +25,7 @@ import utilitarios.PathCfg;
  * @author Diego
  */
 @WebServlet(name="ObraSocialListServlet",urlPatterns={PathCfg.OBRASOCIAL_LIST})
-public class ObraSocialListServlet extends HttpServlet {
+public class ObraSocialListServlet extends CustomHttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -42,7 +44,9 @@ public class ObraSocialListServlet extends HttpServlet {
         
         try {
             JsonRespuesta jr = new JsonRespuesta();
-            List<Obra_social> lista = new TObraSocial().getList();
+           Map<String, String> procesarFiltro = this.procesarFiltro(request);
+           System.out.println(procesarFiltro.size());
+            List<Obra_social> lista = new TObraSocial().getListFiltro(this.procesarFiltro(request));
             if (lista != null) {
                 jr.setTotalRecordCount(lista.size());                  
             } else {

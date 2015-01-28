@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import transaccion.TPaciente;
+import utilitarios.CustomHttpServlet;
 import utilitarios.JsonRespuesta;
 import utilitarios.PathCfg;
 
@@ -27,7 +28,7 @@ import utilitarios.PathCfg;
  * @author Diego
  */
 @WebServlet(name = "PacienteListServlet", urlPatterns = {PathCfg.PACIENTES_LIST})
-public class PacienteListServlet extends HttpServlet {
+public class PacienteListServlet extends CustomHttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -44,11 +45,8 @@ public class PacienteListServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        
-        
         try {
             JsonRespuesta jr = new JsonRespuesta();
-            
             
             List<Paciente> lista = new TPaciente().getListFiltro(procesarFiltro(request));
             
@@ -67,19 +65,6 @@ public class PacienteListServlet extends HttpServlet {
         } finally {            
             out.close();
         }
-    }
-    private Map<String,String> procesarFiltro(HttpServletRequest request){
-        HashMap filtro = new HashMap();
-       Enumeration<String> parameterNames = request.getParameterNames();
-       
-       while(parameterNames.hasMoreElements()){
-           String name = parameterNames.nextElement();
-           if(request.getParameter(name)!=null && !request.getParameter(name).equals(""))
-                filtro.put(name, request.getParameter(name));
-       }
-
-        
-        return filtro;        
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
