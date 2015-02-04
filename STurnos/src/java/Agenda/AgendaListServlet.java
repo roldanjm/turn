@@ -126,4 +126,4 @@ public class AgendaListServlet extends CustomHttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-} 
+}
